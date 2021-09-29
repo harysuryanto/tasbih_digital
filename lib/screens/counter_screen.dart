@@ -51,7 +51,7 @@ class CounterScreen extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(40),
+                    topLeft: Radius.circular(30),
                   ),
                 ),
                 child: Column(
@@ -81,6 +81,9 @@ class CounterScreen extends StatelessWidget {
                             /// Reset the count
                             tasbihController.reset(index);
 
+                            /// Vibrate
+                            Feedback.forLongPress(context);
+
                             /// Show notification
                             Get.snackbar(
                               'Tasbih direset',
@@ -109,6 +112,9 @@ class CounterScreen extends StatelessWidget {
                                 },
                               ),
                             );
+
+                            /// Vibrate
+                            Feedback.forLongPress(context);
                           },
                         ),
                       ],
@@ -121,8 +127,13 @@ class CounterScreen extends StatelessWidget {
                         IconButton(
                           icon: Icon(Icons.arrow_drop_up),
                           iconSize: 100,
+                          autofocus: true,
+                          splashColor: Colors.red, // Not working I guest
                           onPressed: () {
                             tasbihController.increment(index);
+
+                            /// Vibrate
+                            Feedback.forLongPress(context);
                           },
                         ),
                         IconButton(
@@ -131,6 +142,9 @@ class CounterScreen extends StatelessWidget {
                           onPressed: () {
                             if (tasbihController.tasbihs[index].count > 0) {
                               tasbihController.decrement(index);
+
+                              /// Vibrate
+                              Feedback.forLongPress(context);
                             }
                           },
                         ),

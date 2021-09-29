@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:tasbih_digital/controllers/tasbih_controller.dart';
@@ -93,7 +94,7 @@ class HomeScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [Icon(Icons.delete_outline_rounded)],
                       ),
-                      // direction: DismissDirection.startToEnd,
+                      direction: DismissDirection.endToStart,
                       onDismissed: (_) {
                         var removed = tasbihController.tasbihs[index];
                         tasbihController.tasbihs.removeAt(index);
@@ -149,6 +150,15 @@ class HomeScreen extends StatelessWidget {
                           onTap: () {
                             Get.toNamed('/counter?index=' + index.toString());
                           },
+                          onLongPress: () {
+                            Fluttertoast.showToast(
+                              msg: "Geser ke kiri untuk menghapus",
+                              toastLength: Toast.LENGTH_LONG,
+                              webPosition: 'center',
+                              webBgColor: '#000',
+                              timeInSecForIosWeb: 3,
+                            );
+                          },
                         ),
                       ),
                     );
@@ -163,7 +173,7 @@ class HomeScreen extends StatelessWidget {
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(40),
+                  topLeft: Radius.circular(30),
                 ),
               ),
               child: Column(
