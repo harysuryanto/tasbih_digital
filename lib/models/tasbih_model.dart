@@ -8,7 +8,7 @@ class Tasbih extends GetxController {
   Tasbih({
     required this.name,
     this.count = 0,
-    this.updatedAt = '2021-01-01 23:59:00',
+    this.updatedAt = '1970-01-01 00:00:00',
   });
 
   factory Tasbih.fromJson(Map<String, dynamic> json) {
