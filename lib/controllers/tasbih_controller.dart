@@ -16,32 +16,32 @@ class TasbihController extends GetxController {
         Tasbih(
           name: 'SubhanAllah',
           count: 33,
-          updatedAt: DateTime.now().toString(),
+          updatedAt: DateTime.now().toIso8601String(),
         ),
         Tasbih(
           name: 'AllahuAkbar',
           count: 107,
-          updatedAt: DateTime.now().toString(),
+          updatedAt: DateTime.now().toIso8601String(),
         ),
         Tasbih(
           name: 'MasyaAllah',
           count: 69,
-          updatedAt: DateTime.now().toString(),
+          updatedAt: DateTime.now().toIso8601String(),
         ),
         Tasbih(
           name: 'Contoh tasbih',
           count: 41,
-          updatedAt: DateTime.now().toString(),
+          updatedAt: DateTime.now().toIso8601String(),
         ),
         Tasbih(
           name: '🕌',
           count: 14,
-          updatedAt: DateTime.now().toString(),
+          updatedAt: DateTime.now().toIso8601String(),
         ),
         Tasbih(
           name: 'Mantap Jiwa 🤩',
           count: 77,
-          updatedAt: DateTime.now().toString(),
+          updatedAt: DateTime.now().toIso8601String(),
         ),
       ]);
     }
@@ -57,7 +57,7 @@ class TasbihController extends GetxController {
     increment.count++;
     tasbihs[index] = increment;
 
-    print('+1');
+    print('[DATABASE] +1');
 
     /// Update the updatedAt
     updateUpdatedAt(index);
@@ -67,17 +67,36 @@ class TasbihController extends GetxController {
     var decrement = tasbihs[index];
     decrement.count--;
     tasbihs[index] = decrement;
-    print('-1');
+    print('[DATABASE] -1');
 
     /// Update the updatedAt
     updateUpdatedAt(index);
+  }
+
+  void insert(name) {
+    tasbihs.add(Tasbih(name: name));
+    print('[DATABASE] inserted $name');
+  }
+
+  void remove(index) {
+    tasbihs.removeAt(index);
+    print('[DATABASE] deleted at index $index');
+  }
+
+  void rename(index, newName) {
+    var rename = tasbihs[index];
+    rename.name = newName;
+    tasbihs[index] = rename;
+    print('[DATABASE] renamed at index $index');
+
+    /// Note: Does not update the [updatedAt] because [updatedAt] in only updated if the tasbih counter is changed
   }
 
   void reset(index) {
     var reset = tasbihs[index];
     reset.count = 0;
     tasbihs[index] = reset;
-    print('reset to 0');
+    print('[DATABASE] reset to 0');
 
     /// Update the updatedAt
     updateUpdatedAt(index);
@@ -85,7 +104,7 @@ class TasbihController extends GetxController {
 
   void updateUpdatedAt(index) {
     var newUpdatedAt = tasbihs[index];
-    newUpdatedAt.updatedAt = DateTime.now().toString();
+    newUpdatedAt.updatedAt = DateTime.now().toIso8601String();
     tasbihs[index] = newUpdatedAt;
   }
 }
