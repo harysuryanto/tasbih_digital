@@ -88,6 +88,14 @@ class CounterScreen extends StatelessWidget {
                             Get.snackbar(
                               'Tasbih direset',
                               'Penghitung dikembalikan ke 0',
+                              backgroundColor: Colors.white,
+                              boxShadows: [
+                                BoxShadow(
+                                  offset: Offset(0, 3),
+                                  blurRadius: 20,
+                                  color: Colors.black26,
+                                ),
+                              ],
                               mainButton: TextButton(
                                 child: Text(
                                   'Urungkan',
@@ -105,7 +113,7 @@ class CounterScreen extends StatelessWidget {
                                   tasbihController.tasbihs[index] =
                                       newUpdatedAt;
                                   isUndoDone = true;
-                                  print('undo the reset');
+                                  print('[DATABASE] undo the reset');
                                   if (Get.isSnackbarOpen!) {
                                     Get.back();
                                   }
