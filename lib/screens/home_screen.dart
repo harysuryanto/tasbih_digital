@@ -3,32 +3,84 @@ import 'package:flutter_swipe_action_cell/core/cell.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:tasbih_digital/controllers/tasbih_controller.dart';
+
+import '../controllers/settings_controller.dart';
+import '../controllers/tasbih_controller.dart';
+import '../controllers/theme_controller.dart';
+import '../widgets/change_theme_button_widget.dart';
 
 class HomeScreen extends StatelessWidget {
   final tasbihController = Get.put(TasbihController());
+  final themeController = Get.find<ThemeController>();
+  final settingsController = Get.put(SettingsController());
   final textEditingController = TextEditingController();
   final textFieldFocusNode = FocusNode();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).primaryColor,
+      drawer: Drawer(
+        child: ListView(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 20, left: 10),
+              child: Text('Pengaturan'),
+            ),
+
+            /// Theme mode
+            ListTile(
+              leading: Icon(Icons.dark_mode_outlined),
+              title: Text('Mode gelap'),
+              trailing: ChangeThemeButtonWidget(),
+            ),
+
+            /// Long vibration each 33
+            ListTile(
+              key: UniqueKey(),
+              leading: Icon(Icons.vibration_outlined),
+              title: Text('Getar panjang setiap 33'),
+              trailing: GetBuilder<SettingsController>(
+                builder: (context) {
+                  return Switch.adaptive(
+                    value: settingsController.longVibrateEach33,
+                    onChanged: (_) {
+                      settingsController.toggleLongVibrateEach33();
+                    },
+                  );
+                },
+              ),
+            ),
+
+            /// Long vibration at 100
+            ListTile(
+              leading: Icon(Icons.vibration_outlined),
+              title: Text('Getar panjang pada 100'),
+              trailing: GetBuilder<SettingsController>(builder: (context) {
+                return Switch.adaptive(
+                  value: settingsController.longVibrateAt100,
+                  onChanged: (value) {
+                    settingsController.toggleLongVibrateAt100();
+                  },
+                );
+              }),
+            ),
+          ],
+        ),
+      ),
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            // * Toolbar
+            /// Toolbar
             Container(
               padding: const EdgeInsets.only(top: 30, left: 30, right: 30),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('Pilih tasbihmu', style: TextStyle(color: Colors.white)),
+                  Text('Pilih tasbihmu'),
                   IconButton(
                     icon: Icon(
                       Icons.add,
-                      color: Colors.white,
                     ),
                     padding: EdgeInsets.zero,
                     tooltip: 'Buat tasbih baru',
@@ -97,27 +149,33 @@ class HomeScreen extends StatelessWidget {
             ),
 
             // * Guide
-            Container(
-              padding: EdgeInsets.all(40),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(30),
-                ),
-              ),
-              child: Column(
-                children: [
-                  Container(
-                    child: Image.asset(
-                      "assets/images/pilih_tasbih.png",
-                      height: 120,
-                    ),
+            GetBuilder<ThemeController>(builder: (context) {
+              return Container(
+                padding: EdgeInsets.all(40),
+                decoration: BoxDecoration(
+                  color: Get.theme
+                      .backgroundColor, // Expect: white (light) / grey (dark)
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(30),
                   ),
-                  SizedBox(height: 20),
-                  Text('Pilih tasbih ya...'),
-                ],
-              ),
-            ),
+                ),
+                child: Column(
+                  children: [
+                    Container(
+                      child: Image.asset(
+                        "assets/images/pilih_tasbih.png",
+                        height: 120,
+                      ),
+                    ),
+                    SizedBox(height: 20),
+                    Text(
+                      'Pilih tasbih ya...',
+                    ),
+                    SizedBox(height: 20),
+                  ],
+                ),
+              );
+            }),
           ],
         ),
       ),
@@ -125,6 +183,8 @@ class HomeScreen extends StatelessWidget {
   }
 
   Widget _buildItem(var item, int index) {
+    print('[rendering] _buildItem()');
+
     /// Formatting the date
     DateTime originalUpdatedAt =
         DateTime.parse(tasbihController.tasbihs[index].updatedAt);
@@ -133,13 +193,18 @@ class HomeScreen extends StatelessWidget {
 
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Get.theme.backgroundColor,
         borderRadius: BorderRadius.all(Radius.circular(20)),
       ),
       child: ListTile(
-        title: Text(tasbihController.tasbihs[index].name),
+        title: Text(
+          tasbihController.tasbihs[index].name,
+          overflow: TextOverflow.ellipsis,
+        ),
         subtitle: Text(
-          'Digunakan pada $formattedUpdatedAt',
+          tasbihController.tasbihs[index].updatedAt == '1970-01-01 00:00:00'
+              ? 'Belum pernah digunakan'
+              : 'Digunakan pada $formattedUpdatedAt',
         ),
         trailing: Container(
           height: 35,
@@ -147,13 +212,12 @@ class HomeScreen extends StatelessWidget {
           padding: EdgeInsets.all(2),
           alignment: Alignment.center,
           decoration: BoxDecoration(
-            color: Colors.green,
+            color: Get.theme.scaffoldBackgroundColor,
             borderRadius: BorderRadius.all(Radius.circular(20)),
           ),
           child: Text(
             '${tasbihController.tasbihs[index].count}',
             style: TextStyle(
-              color: Colors.white,
               overflow: TextOverflow.ellipsis,
             ),
           ),
@@ -163,7 +227,7 @@ class HomeScreen extends StatelessWidget {
         },
         onLongPress: () {
           Fluttertoast.showToast(
-            msg: "Geser ke kiri untuk menghapus",
+            msg: "Geser ke kiri untuk opsi lain",
             toastLength: Toast.LENGTH_LONG,
             webPosition: 'center',
             webBgColor: '#000',
@@ -183,7 +247,6 @@ class HomeScreen extends StatelessWidget {
     Get.snackbar(
       '${removed.name} dihapus',
       'Tekan Urungkan untuk mengembalikan.',
-      backgroundColor: Colors.white,
       boxShadows: [
         BoxShadow(
           offset: Offset(0, 3),
@@ -194,7 +257,6 @@ class HomeScreen extends StatelessWidget {
       mainButton: TextButton(
         child: Text(
           'Urungkan',
-          style: TextStyle(color: Colors.black),
         ),
         onPressed: () {
           if (removed == null) {
@@ -225,8 +287,11 @@ class HomeScreen extends StatelessWidget {
         isEditMode ? tasbihController.tasbihs[indexToEdit].name : '';
 
     final onSubmit = () {
+      /// Remove spaces from leading and trailing
+      final tasbihName = textEditingController.text.trim();
+
       /// Tell user to fill the text field if it is is empty
-      if (textEditingController.text.isEmpty) {
+      if (tasbihName.isEmpty) {
         textFieldFocusNode.requestFocus();
         Fluttertoast.showToast(
           msg: 'Nama tidak boleh kosong',
@@ -236,15 +301,26 @@ class HomeScreen extends StatelessWidget {
           timeInSecForIosWeb: 3,
         );
       } else {
-        if (isEditMode) {
-          /// Update the selected data in database
-          tasbihController.rename(indexToEdit, textEditingController.text);
+        if (tasbihController.isExist(tasbihName)) {
+          textFieldFocusNode.requestFocus();
+          Fluttertoast.showToast(
+            msg: 'Sudah ada tasbih dengan nama yang sama, gunakan nama lain.',
+            toastLength: Toast.LENGTH_LONG,
+            webPosition: 'center',
+            webBgColor: '#000',
+            timeInSecForIosWeb: 3,
+          );
         } else {
-          /// Insert data to database
-          tasbihController.insert(textEditingController.text);
+          if (isEditMode) {
+            /// Update the selected data in database
+            tasbihController.rename(indexToEdit, tasbihName);
+          } else {
+            /// Insert data to database
+            tasbihController.insert(tasbihName);
+          }
+          Get.back();
+          textEditingController.clear();
         }
-        Get.back();
-        textEditingController.clear();
       }
     };
 
@@ -252,7 +328,9 @@ class HomeScreen extends StatelessWidget {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text(isEditMode ? 'Ubah nama tasbih' : 'Tambah tasbih'),
+          title: Text(
+            isEditMode ? 'Ubah nama tasbih' : 'Tambah tasbih',
+          ),
           content: TextField(
             controller: textEditingController,
             autofocus: true,
@@ -264,7 +342,7 @@ class HomeScreen extends StatelessWidget {
           ),
           actions: <Widget>[
             TextButton(
-              child: const Text(
+              child: Text(
                 'Simpan',
               ),
               onPressed: onSubmit,

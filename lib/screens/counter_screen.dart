@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:get/get.dart';
-import 'package:tasbih_digital/controllers/tasbih_controller.dart';
+
+import '../controllers/settings_controller.dart';
+import '../controllers/tasbih_controller.dart';
 
 class CounterScreen extends StatelessWidget {
   final tasbihController = Get.find<TasbihController>();
+  final settingsController = Get.find<SettingsController>();
   final index = int.parse(Get.parameters['index']!);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).primaryColor,
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -21,7 +24,6 @@ class CounterScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   IconButton(
-                    color: Colors.white,
                     padding: EdgeInsets.zero,
                     icon: Icon(Icons.arrow_back),
                     onPressed: () {
@@ -31,12 +33,12 @@ class CounterScreen extends StatelessWidget {
                   SizedBox(height: 8),
                   Text(
                     'Kamu memilih',
-                    style: TextStyle(color: Colors.white),
                   ),
                   SizedBox(height: 8),
                   Text(
                     tasbihController.tasbihs[index].name,
-                    style: TextStyle(color: Colors.white, fontSize: 30),
+                    style: TextStyle(fontSize: 30),
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ],
               ),
@@ -49,7 +51,8 @@ class CounterScreen extends StatelessWidget {
               child: Container(
                 padding: EdgeInsets.only(top: 40, bottom: 100),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: Get.theme
+                      .backgroundColor, // Expect: white (light) / grey (dark)
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(30),
                   ),
@@ -66,95 +69,123 @@ class CounterScreen extends StatelessWidget {
                             style: TextStyle(fontSize: 100),
                           ),
                         ),
-                        IconButton(
-                          icon: Icon(Icons.restart_alt),
-                          tooltip: 'Atur ulang',
-                          onPressed: () {
-                            /// Backup the count before resetting
-                            var countString = tasbihController
-                                .tasbihs[index].count
-                                .toString();
-                            var updatedAtString = tasbihController
-                                .tasbihs[index].updatedAt
-                                .toString();
+                        Material(
+                          color: Colors.transparent,
+                          child: IconButton(
+                            icon: Icon(Icons.restart_alt),
+                            iconSize: 30,
+                            splashRadius: 24,
+                            padding: EdgeInsets.zero,
+                            tooltip: 'Atur ulang',
+                            onPressed: () {
+                              /// Backup the count before resetting
+                              var countString = tasbihController
+                                  .tasbihs[index].count
+                                  .toString();
+                              var updatedAtString = tasbihController
+                                  .tasbihs[index].updatedAt
+                                  .toString();
 
-                            /// Reset the count
-                            tasbihController.reset(index);
+                              /// Reset the count
+                              tasbihController.reset(index);
 
-                            /// Vibrate
-                            Feedback.forLongPress(context);
+                              /// Vibrate
+                              Vibrate.feedback(FeedbackType.medium);
 
-                            /// Show notification
-                            Get.snackbar(
-                              'Tasbih direset',
-                              'Penghitung dikembalikan ke 0',
-                              backgroundColor: Colors.white,
-                              boxShadows: [
-                                BoxShadow(
-                                  offset: Offset(0, 3),
-                                  blurRadius: 20,
-                                  color: Colors.black26,
+                              /// Show notification
+                              Get.snackbar(
+                                'Tasbih direset',
+                                'Penghitung dikembalikan ke 0',
+                                boxShadows: [
+                                  BoxShadow(
+                                    offset: Offset(0, 3),
+                                    blurRadius: 20,
+                                    color: Colors.black26,
+                                  ),
+                                ],
+                                mainButton: TextButton(
+                                  child: Text(
+                                    'Urungkan',
+                                  ),
+                                  onPressed: () {
+                                    var isUndoDone = false;
+                                    if (isUndoDone) {
+                                      return;
+                                    }
+                                    var newUpdatedAt =
+                                        tasbihController.tasbihs[index];
+                                    newUpdatedAt.count = int.parse(countString);
+                                    newUpdatedAt.updatedAt = updatedAtString;
+                                    tasbihController.tasbihs[index] =
+                                        newUpdatedAt;
+                                    isUndoDone = true;
+                                    print('[DATABASE] undo the reset');
+                                    if (Get.isSnackbarOpen!) {
+                                      Get.back();
+                                    }
+                                  },
                                 ),
-                              ],
-                              mainButton: TextButton(
-                                child: Text(
-                                  'Urungkan',
-                                  style: TextStyle(color: Colors.black),
-                                ),
-                                onPressed: () {
-                                  var isUndoDone = false;
-                                  if (isUndoDone) {
-                                    return;
-                                  }
-                                  var newUpdatedAt =
-                                      tasbihController.tasbihs[index];
-                                  newUpdatedAt.count = int.parse(countString);
-                                  newUpdatedAt.updatedAt = updatedAtString;
-                                  tasbihController.tasbihs[index] =
-                                      newUpdatedAt;
-                                  isUndoDone = true;
-                                  print('[DATABASE] undo the reset');
-                                  if (Get.isSnackbarOpen!) {
-                                    Get.back();
-                                  }
-                                },
-                              ),
-                            );
+                              );
 
-                            /// Vibrate
-                            Feedback.forLongPress(context);
-                          },
+                              /// Vibrate
+                              Feedback.forLongPress(context);
+                            },
+                          ),
                         ),
                       ],
                     ),
 
-                    // * Bottom section
+                    // * Counter section
                     Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        IconButton(
-                          icon: Icon(Icons.arrow_drop_up),
-                          iconSize: 100,
-                          autofocus: true,
-                          splashColor: Colors.red, // Not working I guest
-                          onPressed: () {
-                            tasbihController.increment(index);
-
-                            /// Vibrate
-                            Feedback.forLongPress(context);
-                          },
-                        ),
-                        IconButton(
-                          icon: Icon(Icons.arrow_drop_down),
-                          iconSize: 40,
-                          onPressed: () {
-                            if (tasbihController.tasbihs[index].count > 0) {
-                              tasbihController.decrement(index);
+                        Material(
+                          color: Colors.transparent,
+                          child: IconButton(
+                            icon: Icon(
+                              Icons.arrow_drop_up,
+                              size: 140,
+                            ),
+                            iconSize: 180,
+                            splashRadius: 90,
+                            padding: EdgeInsets.all(0),
+                            onPressed: () {
+                              tasbihController.increment(index);
 
                               /// Vibrate
-                              Feedback.forLongPress(context);
-                            }
-                          },
+                              if (tasbihController.tasbihs[index].count % 33 ==
+                                      0 &&
+                                  settingsController.longVibrateEach33) {
+                                Vibrate.vibrate();
+                                print('looooooooong vibration (33)');
+                              } else if (tasbihController
+                                          .tasbihs[index].count ==
+                                      100 &&
+                                  settingsController.longVibrateAt100) {
+                                Vibrate.vibrate();
+                                print('looooooooong vibration (100)');
+                              } else {
+                                Vibrate.feedback(FeedbackType.medium);
+                              }
+                            },
+                          ),
+                        ),
+                        Material(
+                          color: Colors.transparent,
+                          child: IconButton(
+                            icon: Icon(Icons.arrow_drop_down),
+                            iconSize: 60,
+                            splashRadius: 30,
+                            padding: EdgeInsets.all(0),
+                            onPressed: () {
+                              if (tasbihController.tasbihs[index].count > 0) {
+                                tasbihController.decrement(index);
+
+                                /// Vibrate
+                                Vibrate.feedback(FeedbackType.medium);
+                              }
+                            },
+                          ),
                         ),
                       ],
                     ),
