@@ -16,32 +16,32 @@ class TasbihController extends GetxController {
         Tasbih(
           name: 'SubhanAllah',
           count: 33,
-          updatedAt: DateTime.now().toIso8601String(),
+          updatedAt: '1970-01-01 00:00:00',
         ),
         Tasbih(
           name: 'AllahuAkbar',
           count: 107,
-          updatedAt: DateTime.now().toIso8601String(),
+          updatedAt: '1970-01-01 00:00:00',
         ),
         Tasbih(
           name: 'MasyaAllah',
           count: 69,
-          updatedAt: DateTime.now().toIso8601String(),
+          updatedAt: '1970-01-01 00:00:00',
         ),
         Tasbih(
           name: 'Contoh tasbih',
           count: 41,
-          updatedAt: DateTime.now().toIso8601String(),
+          updatedAt: '1970-01-01 00:00:00',
         ),
         Tasbih(
           name: '🕌',
           count: 14,
-          updatedAt: DateTime.now().toIso8601String(),
+          updatedAt: '1970-01-01 00:00:00',
         ),
         Tasbih(
           name: 'Mantap Jiwa 🤩',
           count: 77,
-          updatedAt: DateTime.now().toIso8601String(),
+          updatedAt: '1970-01-01 00:00:00',
         ),
       ]);
     }
@@ -89,7 +89,7 @@ class TasbihController extends GetxController {
     tasbihs[index] = rename;
     print('[DATABASE] renamed at index $index');
 
-    /// Note: Does not update the [updatedAt] because [updatedAt] in only updated if the tasbih counter is changed
+    /// Note: Does not update the [updatedAt] because [updatedAt] is only updated if the tasbih counter is changed
   }
 
   void reset(index) {
@@ -106,5 +106,15 @@ class TasbihController extends GetxController {
     var newUpdatedAt = tasbihs[index];
     newUpdatedAt.updatedAt = DateTime.now().toIso8601String();
     tasbihs[index] = newUpdatedAt;
+  }
+
+  bool isExist(name) {
+    for (var i = 0; i < tasbihs.length; i++) {
+      if (tasbihs[i].name == name) {
+        return true;
+      }
+    }
+
+    return false;
   }
 }

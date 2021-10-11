@@ -1,6 +1,4 @@
-import 'package:get/get.dart';
-
-class Tasbih extends GetxController {
+class Tasbih {
   String name;
   int count;
   String updatedAt;
