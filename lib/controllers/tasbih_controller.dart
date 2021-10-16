@@ -15,32 +15,17 @@ class TasbihController extends GetxController {
       tasbihs.addAll([
         Tasbih(
           name: 'SubhanAllah',
-          count: 33,
+          count: 0,
           updatedAt: '1970-01-01 00:00:00',
         ),
         Tasbih(
           name: 'AllahuAkbar',
-          count: 107,
+          count: 0,
           updatedAt: '1970-01-01 00:00:00',
         ),
         Tasbih(
           name: 'MasyaAllah',
-          count: 69,
-          updatedAt: '1970-01-01 00:00:00',
-        ),
-        Tasbih(
-          name: 'Contoh tasbih',
-          count: 41,
-          updatedAt: '1970-01-01 00:00:00',
-        ),
-        Tasbih(
-          name: '🕌',
-          count: 14,
-          updatedAt: '1970-01-01 00:00:00',
-        ),
-        Tasbih(
-          name: 'Mantap Jiwa 🤩',
-          count: 77,
+          count: 0,
           updatedAt: '1970-01-01 00:00:00',
         ),
       ]);
