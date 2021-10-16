@@ -10,7 +10,7 @@ class ChangeThemeButtonWidget extends StatelessWidget {
     return GetBuilder<ThemeController>(
       builder: (context) {
         return Switch.adaptive(
-          value: themeController.isDarkMode,
+          value: Get.isDarkMode,
           onChanged: (value) {
             themeController.toggleTheme();
           },
