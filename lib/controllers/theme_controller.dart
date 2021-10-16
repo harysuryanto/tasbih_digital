@@ -1,42 +1,49 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
+// import 'package:flutter/scheduler.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
 class ThemeController extends GetxController {
-  ThemeMode themeMode = ThemeMode.system;
+  /// Default theme
+  ThemeMode themeMode = ThemeMode.light;
 
   @override
   void onInit() {
     var storedThemeModeString = GetStorage().read('themeMode');
     ThemeMode? storedThemeMode;
 
+    print('a) isi ThemeMode di DB: ${GetStorage().read('themeMode')}');
+
     // TODO: Convert String to ThemeMode and remove this if below
     if (storedThemeModeString == ThemeMode.system.toString()) {
       storedThemeMode = ThemeMode.system;
     } else if (storedThemeModeString == ThemeMode.light.toString()) {
       storedThemeMode = ThemeMode.light;
-    } else {
+    } else if (storedThemeModeString == ThemeMode.dark.toString()) {
       storedThemeMode = ThemeMode.dark;
     }
 
     if (storedThemeModeString != null) {
-      themeMode = storedThemeMode;
-    }
-  }
-
-  bool get isDarkMode {
-    if (themeMode == ThemeMode.system) {
-      final brightness = SchedulerBinding.instance!.window.platformBrightness;
-      return brightness == Brightness.dark;
+      /// Take from database if theme mode already exists in database
+      themeMode = storedThemeMode!;
+      print('Theme mode exists in database');
     } else {
-      return themeMode == ThemeMode.dark;
+      print(
+          'Theme mode doesn\'t exist in database. Set it to $themeMode as default.');
+
+      /// Set default theme and save to database if theme mode doesn't exist in database
+      saveToDatabase('themeMode', themeMode.toString());
     }
+
+    print('[1] ThemeController - onInit()');
+    print('b) isi ThemeMode di DB: $storedThemeMode');
+
+    super.onInit();
   }
 
   void toggleTheme() {
     print('Changing theme from $themeMode');
-    themeMode = isDarkMode ? ThemeMode.light : ThemeMode.dark;
+    themeMode = Get.isDarkMode ? ThemeMode.light : ThemeMode.dark;
 
     /// Update the UI
     update();
