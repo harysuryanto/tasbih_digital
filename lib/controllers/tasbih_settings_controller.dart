@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
-class SettingsController extends GetxController {
+class TasbihSettingsController extends GetxController {
   var longVibrateEach33 = false;
   var longVibrateAt100 = false;
 
@@ -17,6 +17,8 @@ class SettingsController extends GetxController {
     if (storedLongVibrateAt100 != null) {
       longVibrateAt100 = storedLongVibrateAt100;
     }
+
+    super.onInit();
   }
 
   void toggleLongVibrateEach33() {

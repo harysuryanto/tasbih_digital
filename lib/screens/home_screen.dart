@@ -4,15 +4,16 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-import '../controllers/settings_controller.dart';
+import '../controllers/tasbih_settings_controller.dart';
 import '../controllers/tasbih_controller.dart';
 import '../controllers/theme_controller.dart';
 import '../widgets/change_theme_button_widget.dart';
 
 class HomeScreen extends StatelessWidget {
-  final tasbihController = Get.put(TasbihController());
+  final tasbihController = Get.find<TasbihController>();
   final themeController = Get.find<ThemeController>();
-  final settingsController = Get.put(SettingsController());
+  final tasbihSettingsController = Get.find<TasbihSettingsController>();
+
   final textEditingController = TextEditingController();
   final textFieldFocusNode = FocusNode();
 
@@ -39,12 +40,12 @@ class HomeScreen extends StatelessWidget {
               key: UniqueKey(),
               leading: Icon(Icons.vibration_outlined),
               title: Text('Getar panjang setiap 33'),
-              trailing: GetBuilder<SettingsController>(
+              trailing: GetBuilder<TasbihSettingsController>(
                 builder: (context) {
                   return Switch.adaptive(
-                    value: settingsController.longVibrateEach33,
+                    value: tasbihSettingsController.longVibrateEach33,
                     onChanged: (_) {
-                      settingsController.toggleLongVibrateEach33();
+                      tasbihSettingsController.toggleLongVibrateEach33();
                     },
                   );
                 },
@@ -55,11 +56,12 @@ class HomeScreen extends StatelessWidget {
             ListTile(
               leading: Icon(Icons.vibration_outlined),
               title: Text('Getar panjang pada 100'),
-              trailing: GetBuilder<SettingsController>(builder: (context) {
+              trailing:
+                  GetBuilder<TasbihSettingsController>(builder: (context) {
                 return Switch.adaptive(
-                  value: settingsController.longVibrateAt100,
+                  value: tasbihSettingsController.longVibrateAt100,
                   onChanged: (value) {
-                    settingsController.toggleLongVibrateAt100();
+                    tasbihSettingsController.toggleLongVibrateAt100();
                   },
                 );
               }),
