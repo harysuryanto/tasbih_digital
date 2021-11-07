@@ -79,7 +79,22 @@ class HomeScreen extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('Pilih tasbihmu'),
+                  Row(
+                    children: [
+                      Builder(builder: (context) {
+                        return IconButton(
+                          icon: Icon(Icons.menu),
+                          padding: EdgeInsets.zero,
+                          tooltip: 'Tampilkan opsi lanjut',
+                          onPressed: () {
+                            // Open drawer
+                            Scaffold.of(context).openDrawer();
+                          },
+                        );
+                      }),
+                      Text('Pilih tasbihmu'),
+                    ],
+                  ),
                   IconButton(
                     icon: Icon(
                       Icons.add,
