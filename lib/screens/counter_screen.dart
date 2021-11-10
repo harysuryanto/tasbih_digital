@@ -2,13 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../controllers/tasbih_controller.dart';
-import '../controllers/tasbih_settings_controller.dart';
 import '../widgets/counter.dart';
 
 class CounterScreen extends StatelessWidget {
   final tasbihController = Get.find<TasbihController>();
-  final tasbihSettingsController =
-      Get.find<TasbihSettingsController>(); // TODO: coba hapus
 
   final index = int.parse(Get.parameters['index']!);
 
