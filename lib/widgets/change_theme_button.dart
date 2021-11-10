@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:tasbih_digital/controllers/theme_controller.dart';
 
-class ChangeThemeButtonWidget extends StatelessWidget {
+import '../controllers/theme_controller.dart';
+
+class ChangeThemeButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeController = Get.find<ThemeController>();

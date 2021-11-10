@@ -42,12 +42,12 @@ class ThemeController extends GetxController {
   }
 
   void toggleTheme() {
-    print('Changing theme from $themeMode');
+    print('Changing theme \n    from $themeMode');
     themeMode = Get.isDarkMode ? ThemeMode.light : ThemeMode.dark;
 
     /// Update the UI
     update();
-    print('    to $themeMode');
+    print('    to   $themeMode');
 
     /// Save to database
     saveToDatabase('themeMode', themeMode.toString());
