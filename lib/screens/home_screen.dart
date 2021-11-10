@@ -10,12 +10,13 @@ import '../controllers/tasbih_controller.dart';
 import '../controllers/theme_controller.dart';
 
 class HomeScreen extends StatelessWidget {
-  final tasbihController = Get.find<TasbihController>();
+  final tasbihController = Get.find<TasbihController>(); // TODO: coba hapus
   final themeController = Get.find<ThemeController>();
-  final tasbihSettingsController = Get.find<TasbihSettingsController>();
+  final tasbihSettingsController =
+      Get.find<TasbihSettingsController>(); // TODO: coba hapus
 
-  final textEditingController = TextEditingController();
-  final textFieldFocusNode = FocusNode();
+  final textEditingController = TextEditingController(); // TODO: coba hapus
+  final textFieldFocusNode = FocusNode(); // TODO: coba hapus
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +55,7 @@ class HomeScreen extends StatelessWidget {
                     padding: EdgeInsets.zero,
                     tooltip: 'Buat tasbih baru',
                     onPressed: () {
-                      /// Show dialog
+                      // Show dialog
                       TextEditingDialog.showTextEditingDialog(context: context);
                     },
                   ),

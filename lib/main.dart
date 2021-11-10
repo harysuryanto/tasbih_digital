@@ -3,10 +3,10 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:tasbih_digital/controllers/tasbih_settings_controller.dart';
-import 'package:tasbih_digital/controllers/tasbih_controller.dart';
 import 'package:url_strategy/url_strategy.dart';
 
+import 'controllers/tasbih_controller.dart';
+import 'controllers/tasbih_settings_controller.dart';
 import 'controllers/theme_controller.dart';
 import 'models/theme_model.dart';
 import 'screens/counter_screen.dart';

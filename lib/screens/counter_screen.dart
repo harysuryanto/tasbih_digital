@@ -7,7 +7,8 @@ import '../widgets/counter.dart';
 
 class CounterScreen extends StatelessWidget {
   final tasbihController = Get.find<TasbihController>();
-  final tasbihSettingsController = Get.find<TasbihSettingsController>();
+  final tasbihSettingsController =
+      Get.find<TasbihSettingsController>(); // TODO: coba hapus
 
   final index = int.parse(Get.parameters['index']!);
 
