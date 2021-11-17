@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
-import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 
 import '../controllers/theme_controller.dart';
@@ -13,7 +12,7 @@ import '../widgets/text_editing_dialog.dart';
 class HomeScreen extends StatelessWidget {
   final themeController = Get.find<ThemeController>();
 
-  final double resposiveWidth = Get.width > 768 ? 768 : Get.width;
+  final double maxScreenWidth = 768;
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +21,7 @@ class HomeScreen extends StatelessWidget {
       body: SafeArea(
         child: Center(
           child: Container(
-            width: resposiveWidth,
+            width: maxScreenWidth,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [

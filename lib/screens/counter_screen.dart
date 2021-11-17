@@ -10,7 +10,8 @@ class CounterScreen extends StatelessWidget {
   final tasbihController = Get.find<TasbihController>();
 
   final index = int.parse(Get.parameters['index']!);
-  final double resposiveWidth = Get.width > 768 ? 768 : Get.width;
+
+  final double maxScreenWidth = 768;
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +19,7 @@ class CounterScreen extends StatelessWidget {
       body: SafeArea(
         child: Center(
           child: Container(
-            width: resposiveWidth,
+            width: maxScreenWidth,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
