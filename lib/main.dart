@@ -51,7 +51,7 @@ class MyApp extends StatelessWidget {
             GetPage(
               name: '/counter',
               page: () => CounterScreen(),
-              transition: Transition.cupertino,
+              transition: Transition.downToUp,
             ),
           ],
           title: '✨ Tasbih Digital ✨',
