@@ -1,4 +1,4 @@
-# To generate new splash screen run this command:
+# To generate/update new splash screen run this command 🔽
 # flutter pub run flutter_native_splash:create --path=flutter_native_splash.yaml
 
 flutter_native_splash:
