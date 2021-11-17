@@ -22,10 +22,8 @@ class Counter extends StatelessWidget {
           ? EdgeInsets.only(top: 20, bottom: 30) // 16x9 screen
           : EdgeInsets.only(top: 40, bottom: 100), // Narrow screen
       decoration: BoxDecoration(
-        color: Get.theme.backgroundColor, // Expect: white (light) / grey (dark)
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(30),
-        ),
+        color: Get.theme.backgroundColor,
+        borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

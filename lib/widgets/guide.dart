@@ -7,10 +7,8 @@ class Guide extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(40),
       decoration: BoxDecoration(
-        color: Get.theme.backgroundColor, // Expect: white (light) / grey (dark)
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(30),
-        ),
+        color: Get.theme.backgroundColor,
+        borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
       ),
       child: Column(
         children: [
