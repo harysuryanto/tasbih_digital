@@ -35,10 +35,6 @@ class CounterScreen extends StatelessWidget {
                       ),
                       SizedBox(height: 8),
                       Text(
-                        'Kamu memilih',
-                      ),
-                      SizedBox(height: 8),
-                      Text(
                         tasbihController.tasbihs[index].name,
                         style: TextStyle(fontSize: 30),
                         overflow: TextOverflow.ellipsis,
