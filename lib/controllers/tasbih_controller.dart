@@ -1,6 +1,7 @@
-import 'package:get/get.dart';
+import 'package:get/state_manager.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:tasbih_digital/models/tasbih_model.dart';
+
+import '../models/tasbih_model.dart';
 
 class TasbihController extends GetxController {
   var tasbihs = [].obs;

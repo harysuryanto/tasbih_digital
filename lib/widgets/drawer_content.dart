@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:get/get_instance/src/extension_instance.dart';
+import 'package:get/state_manager.dart';
 
 import '../controllers/tasbih_settings_controller.dart';
 import 'change_theme_button.dart';
