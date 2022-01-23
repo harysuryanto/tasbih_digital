@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_swipe_action_cell/core/cell.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get_core/src/get_main.dart';
@@ -47,7 +48,7 @@ class TasbihList extends StatelessWidget {
                 color: Colors.transparent,
                 onTap: (CompletionHandler handler) async {
                   /// Vibrate
-                  Feedback.forLongPress(context);
+                  HapticFeedback.mediumImpact();
 
                   /// Remove item from ListView
                   await handler(true);

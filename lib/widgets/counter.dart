@@ -109,7 +109,7 @@ class Counter extends StatelessWidget {
                         );
 
                         /// Vibrate
-                        Feedback.forLongPress(context);
+                        HapticFeedback.mediumImpact();
                       },
                     ),
                   ),
