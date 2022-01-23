@@ -14,7 +14,8 @@ class ThemeController extends GetxController {
 
     print('a) isi ThemeMode di DB: ${GetStorage().read('themeMode')}');
 
-    // TODO: Convert String to ThemeMode and remove this if below
+    /// Can not save [ThemeMode.attributeName] to database,
+    /// so below are convertion between ThemeMode and String.
     if (storedThemeModeString == ThemeMode.system.toString()) {
       storedThemeMode = ThemeMode.system;
     } else if (storedThemeModeString == ThemeMode.light.toString()) {
