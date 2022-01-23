@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
@@ -71,9 +72,7 @@ class Counter extends StatelessWidget {
                         tasbihController.reset(index);
 
                         /// Vibrate
-                        if (GetPlatform.isMobile) {
-                          Vibrate.feedback(FeedbackType.medium);
-                        }
+                        HapticFeedback.vibrate();
 
                         /// Show notification
                         Get.snackbar(
@@ -136,19 +135,23 @@ class Counter extends StatelessWidget {
                   onPressed: () {
                     tasbihController.increment(index);
 
-                    /// Vibrate on mobile
-                    if (GetPlatform.isMobile) {
-                      if (tasbihController.tasbihs[index].count % 33 == 0 &&
-                          tasbihSettingsController.longVibrateEach33) {
+                    /// Vibrate
+                    if (tasbihController.tasbihs[index].count % 33 == 0 &&
+                        tasbihSettingsController.longVibrateEach33) {
+                      if (GetPlatform.isMobile) {
                         Vibrate.vibrate();
-                        print('looooooooong vibration (33)');
-                      } else if (tasbihController.tasbihs[index].count == 100 &&
-                          tasbihSettingsController.longVibrateAt100) {
-                        Vibrate.vibrate();
-                        print('looooooooong vibration (100)');
-                      } else {
-                        Vibrate.feedback(FeedbackType.medium);
+                        print(
+                            'long vibration at ${tasbihController.tasbihs[index].count}');
                       }
+                    } else if (tasbihController.tasbihs[index].count == 100 &&
+                        tasbihSettingsController.longVibrateAt100) {
+                      if (GetPlatform.isMobile) {
+                        Vibrate.vibrate();
+                        print(
+                            'long vibration at ${tasbihController.tasbihs[index].count}');
+                      }
+                    } else {
+                      HapticFeedback.vibrate();
                     }
                   },
                 ),
@@ -169,10 +172,8 @@ class Counter extends StatelessWidget {
                       onPressed: () {
                         tasbihController.decrement(index);
 
-                        /// Vibrate on mobile
-                        if (GetPlatform.isMobile) {
-                          Vibrate.feedback(FeedbackType.medium);
-                        }
+                        /// Vibrate
+                        HapticFeedback.vibrate();
                       },
                     ),
                   ),
