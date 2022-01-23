@@ -26,7 +26,6 @@ class TasbihList extends StatelessWidget {
           return SwipeActionCell(
             key: UniqueKey(),
             backgroundColor: Colors.transparent,
-            performsFirstActionWithFullSwipe: false,
             deleteAnimationDuration: 400,
             trailingActions: <SwipeAction>[
               SwipeAction(
