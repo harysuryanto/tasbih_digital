@@ -28,7 +28,7 @@ class Counter extends StatelessWidget {
           : EdgeInsets.only(top: 40, bottom: 100), // Narrow screen
       decoration: BoxDecoration(
         color: Get.theme.backgroundColor,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(30)),
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -55,7 +55,7 @@ class Counter extends StatelessWidget {
                   child: Material(
                     color: Colors.transparent,
                     child: IconButton(
-                      icon: Icon(Icons.restart_alt),
+                      icon: const Icon(Icons.restart_alt),
                       iconSize: 30,
                       splashRadius: 24,
                       padding: EdgeInsets.zero,
@@ -125,13 +125,10 @@ class Counter extends StatelessWidget {
               Material(
                 color: Colors.transparent,
                 child: IconButton(
-                  icon: Icon(
-                    Icons.arrow_drop_up,
-                    size: 100,
-                  ),
+                  icon: const Icon(Icons.arrow_drop_up, size: 100),
                   iconSize: 180,
                   splashRadius: 180 / 2, // = (iconSize / 2)
-                  padding: EdgeInsets.all(0),
+                  padding: const EdgeInsets.all(0),
                   onPressed: () {
                     tasbihController.increment(index);
 
@@ -165,10 +162,10 @@ class Counter extends StatelessWidget {
                   child: Material(
                     color: Colors.transparent,
                     child: IconButton(
-                      icon: Icon(Icons.arrow_drop_down),
+                      icon: const Icon(Icons.arrow_drop_down),
                       iconSize: 60,
                       splashRadius: 60 / 2, // = (iconSize / 2)
-                      padding: EdgeInsets.all(0),
+                      padding: const EdgeInsets.all(0),
                       onPressed: () {
                         tasbihController.decrement(index);
 
