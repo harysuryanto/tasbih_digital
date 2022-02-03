@@ -21,163 +21,150 @@ class Counter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
+    print('Screen height: $screenHeight');
 
     return Container(
-      padding: screenHeight <= 640
-          ? EdgeInsets.only(top: 20, bottom: 30) // 16x9 screen
-          : EdgeInsets.only(top: 40, bottom: 100), // Narrow screen
       decoration: BoxDecoration(
         color: Get.theme.backgroundColor,
         borderRadius: const BorderRadius.vertical(top: Radius.circular(30)),
       ),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          /// Top section
-          Column(
-            children: [
-              Obx(
-                () => Text(
-                  '${tasbihController.tasbihs[index].count.toString()}',
-                  style: TextStyle(
-                    fontSize: screenHeight <= 640
-                        ? 80 // 16x9 screen
-                        : 100, // Narrow screen
-                  ),
-                ),
+          /// Counter text
+          Obx(
+            () => Text(
+              '${tasbihController.tasbihs[index].count.toString()}',
+              style: TextStyle(
+                fontSize: screenHeight <= 640
+                    ? 80 // 16x9 screen
+                    : 100, // Narrow screen
               ),
-              Obx(() {
-                return Visibility(
-                  visible: tasbihController.tasbihs[index].count > 0,
-                  maintainState: true,
-                  maintainSize: true,
-                  maintainAnimation: true,
-                  child: Material(
-                    color: Colors.transparent,
-                    child: IconButton(
-                      icon: const Icon(Icons.restart_alt),
-                      iconSize: 30,
-                      splashRadius: 24,
-                      padding: EdgeInsets.zero,
-                      tooltip: 'Atur ulang',
-                      onPressed: () {
-                        /// Backup the count before resetting
-                        var countString =
-                            tasbihController.tasbihs[index].count.toString();
-                        var updatedAtString = tasbihController
-                            .tasbihs[index].updatedAt
-                            .toString();
-
-                        /// Reset the count
-                        tasbihController.reset(index);
-
-                        /// Vibrate
-                        HapticFeedback.vibrate();
-
-                        /// Show notification
-                        Get.snackbar(
-                          'Tasbih direset',
-                          'Penghitung dikembalikan ke 0',
-                          boxShadows: [
-                            BoxShadow(
-                              offset: Offset(0, 3),
-                              blurRadius: 20,
-                              color: Colors.black26,
-                            ),
-                          ],
-                          mainButton: TextButton(
-                            child: Text(
-                              'Urungkan',
-                            ),
-                            onPressed: () {
-                              var isUndoDone = false;
-                              if (isUndoDone) {
-                                return;
-                              }
-                              var newUpdatedAt =
-                                  tasbihController.tasbihs[index];
-                              newUpdatedAt.count = int.parse(countString);
-                              newUpdatedAt.updatedAt = updatedAtString;
-                              tasbihController.tasbihs[index] = newUpdatedAt;
-                              isUndoDone = true;
-                              print('[DATABASE] undo the reset');
-                              if (Get.isSnackbarOpen!) {
-                                Get.back();
-                              }
-                            },
-                          ),
-                        );
-
-                        /// Vibrate
-                        HapticFeedback.mediumImpact();
-                      },
-                    ),
-                  ),
-                );
-              }),
-            ],
+            ),
           ),
 
-          /// Counter buttons
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Material(
+          /// Reset counter button
+          Obx(() {
+            return Visibility(
+              visible: tasbihController.tasbihs[index].count > 0,
+              maintainState: true,
+              maintainSize: true,
+              maintainAnimation: true,
+              child: Material(
                 color: Colors.transparent,
                 child: IconButton(
-                  icon: const Icon(Icons.arrow_drop_up, size: 100),
-                  iconSize: 180,
-                  splashRadius: 180 / 2, // = (iconSize / 2)
-                  padding: const EdgeInsets.all(0),
+                  icon: const Icon(Icons.restart_alt),
+                  iconSize: 30,
+                  splashRadius: 24,
+                  padding: EdgeInsets.zero,
+                  tooltip: 'Atur ulang',
                   onPressed: () {
-                    tasbihController.increment(index);
+                    /// Backup the count before resetting
+                    var countString =
+                        tasbihController.tasbihs[index].count.toString();
+                    var updatedAtString =
+                        tasbihController.tasbihs[index].updatedAt.toString();
+
+                    /// Reset the count
+                    tasbihController.reset(index);
 
                     /// Vibrate
-                    if (tasbihController.tasbihs[index].count % 33 == 0 &&
-                        tasbihSettingsController.longVibrateEach33) {
-                      if (GetPlatform.isMobile) {
-                        Vibrate.vibrate();
-                        print(
-                            'long vibration at ${tasbihController.tasbihs[index].count}');
-                      }
-                    } else if (tasbihController.tasbihs[index].count == 100 &&
-                        tasbihSettingsController.longVibrateAt100) {
-                      if (GetPlatform.isMobile) {
-                        Vibrate.vibrate();
-                        print(
-                            'long vibration at ${tasbihController.tasbihs[index].count}');
-                      }
-                    } else {
-                      HapticFeedback.vibrate();
-                    }
+                    HapticFeedback.vibrate();
+
+                    /// Show notification
+                    Get.snackbar(
+                      'Tasbih direset',
+                      'Penghitung dikembalikan ke 0',
+                      boxShadows: [
+                        BoxShadow(
+                          offset: Offset(0, 3),
+                          blurRadius: 20,
+                          color: Colors.black26,
+                        ),
+                      ],
+                      mainButton: TextButton(
+                        child: Text(
+                          'Urungkan',
+                        ),
+                        onPressed: () {
+                          var isUndoDone = false;
+                          if (isUndoDone) {
+                            return;
+                          }
+                          var newUpdatedAt = tasbihController.tasbihs[index];
+                          newUpdatedAt.count = int.parse(countString);
+                          newUpdatedAt.updatedAt = updatedAtString;
+                          tasbihController.tasbihs[index] = newUpdatedAt;
+                          isUndoDone = true;
+                          print('[DATABASE] undo the reset');
+                          if (Get.isSnackbarOpen!) {
+                            Get.back();
+                          }
+                        },
+                      ),
+                    );
+
+                    /// Vibrate
+                    HapticFeedback.mediumImpact();
                   },
                 ),
               ),
-              Obx(() {
-                return Visibility(
-                  visible: tasbihController.tasbihs[index].count > 0,
-                  maintainState: true,
-                  maintainSize: true,
-                  maintainAnimation: true,
-                  child: Material(
-                    color: Colors.transparent,
-                    child: IconButton(
-                      icon: const Icon(Icons.arrow_drop_down),
-                      iconSize: 60,
-                      splashRadius: 60 / 2, // = (iconSize / 2)
-                      padding: const EdgeInsets.all(0),
-                      onPressed: () {
-                        tasbihController.decrement(index);
+            );
+          }),
 
-                        /// Vibrate
-                        HapticFeedback.vibrate();
-                      },
-                    ),
-                  ),
-                );
-              }),
-            ],
+          /// Increment and decrement buttons
+          Material(
+            color: Colors.transparent,
+            child: IconButton(
+              icon: const Icon(Icons.arrow_drop_up),
+              iconSize: 180,
+              splashRadius: 180 / 2, // = (iconSize / 2)
+              padding: const EdgeInsets.all(0),
+              onPressed: () {
+                tasbihController.increment(index);
+
+                /// Vibrate
+                if (tasbihController.tasbihs[index].count % 33 == 0 &&
+                    tasbihSettingsController.longVibrateEach33) {
+                  if (GetPlatform.isMobile) {
+                    Vibrate.vibrate();
+                    print(
+                        'long vibration at ${tasbihController.tasbihs[index].count}');
+                  }
+                } else if (tasbihController.tasbihs[index].count == 100 &&
+                    tasbihSettingsController.longVibrateAt100) {
+                  if (GetPlatform.isMobile) {
+                    Vibrate.vibrate();
+                    print(
+                        'long vibration at ${tasbihController.tasbihs[index].count}');
+                  }
+                } else {
+                  HapticFeedback.vibrate();
+                }
+              },
+            ),
           ),
+          Obx(() {
+            return Visibility(
+              visible: tasbihController.tasbihs[index].count > 0,
+              maintainState: true,
+              maintainSize: true,
+              maintainAnimation: true,
+              child: Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  borderRadius: BorderRadius.all(Radius.circular(50)),
+                  child: Icon(Icons.arrow_drop_down, size: 80),
+                  onTap: () {
+                    tasbihController.decrement(index);
+
+                    /// Vibrate
+                    HapticFeedback.vibrate();
+                  },
+                ),
+              ),
+            );
+          }),
         ],
       ),
     );
