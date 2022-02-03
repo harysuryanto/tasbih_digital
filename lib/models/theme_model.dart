@@ -1,17 +1,16 @@
+import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 
 class MyThemes {
-  static final lightTheme = ThemeData(
+  static final lightTheme =
+      FlexThemeData.light(scheme: FlexScheme.green).copyWith(
     scaffoldBackgroundColor: Colors.green,
-    primaryColor: Colors.green,
-    backgroundColor: Colors.white, // Background color for Guide section
-    colorScheme: ColorScheme.light(),
   );
 
-  static final darkTheme = ThemeData(
-    scaffoldBackgroundColor: Colors.grey.shade900,
-    primaryColor: Colors.grey.shade800,
-    backgroundColor: Colors.grey.shade800, // Background color for Guide section
-    colorScheme: ColorScheme.dark(),
+  static final darkTheme =
+      FlexThemeData.dark(scheme: FlexScheme.green).copyWith(
+    backgroundColor: Colors.grey.shade900,
+    dialogBackgroundColor: Colors.grey.shade900,
+    drawerTheme: DrawerThemeData(backgroundColor: Colors.grey.shade900),
   );
 }
