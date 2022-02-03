@@ -17,42 +17,44 @@ class CounterScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Container(
-          alignment: Alignment.center,
-          width: maxScreenWidth,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              /// Toolbar
-              Container(
-                padding: const EdgeInsets.only(top: 30, left: 30, right: 30),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    IconButton(
-                      padding: EdgeInsets.zero,
-                      icon: const Icon(Icons.arrow_back),
-                      onPressed: () {
-                        Get.back();
-                      },
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      tasbihController.tasbihs[index].name,
-                      style: const TextStyle(fontSize: 30),
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ],
+        child: Center(
+          child: Container(
+            alignment: Alignment.center,
+            width: maxScreenWidth,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                /// Toolbar
+                Container(
+                  padding: const EdgeInsets.only(top: 30, left: 30, right: 30),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      IconButton(
+                        padding: EdgeInsets.zero,
+                        icon: const Icon(Icons.arrow_back),
+                        onPressed: () {
+                          Get.back();
+                        },
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        tasbihController.tasbihs[index].name,
+                        style: const TextStyle(fontSize: 30),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
+                  ),
                 ),
-              ),
 
-              const SizedBox(height: 20),
+                const SizedBox(height: 20),
 
-              /// Counter section
-              Expanded(
-                child: Counter(index: index),
-              ),
-            ],
+                /// Counter section
+                Expanded(
+                  child: Counter(index: index),
+                ),
+              ],
+            ),
           ),
         ),
       ),
