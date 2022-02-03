@@ -71,9 +71,9 @@ class HomeScreen extends StatelessWidget {
                 ),
 
                 /// Guide
-                GetBuilder<ThemeController>(builder: (context) {
-                  return Guide();
-                }),
+                /// Show only when touch keyboard is closed
+                if (MediaQuery.of(context).viewInsets.bottom == 0)
+                  GetBuilder<ThemeController>(builder: (_) => Guide()),
               ],
             ),
           ),
