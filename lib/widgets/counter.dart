@@ -58,55 +58,7 @@ class Counter extends StatelessWidget {
                   splashRadius: 24,
                   padding: EdgeInsets.zero,
                   tooltip: 'Atur ulang',
-                  onPressed: () {
-                    /// Backup the count before resetting
-                    var countString =
-                        tasbihController.tasbihs[index].count.toString();
-                    var updatedAtString =
-                        tasbihController.tasbihs[index].updatedAt.toString();
-
-                    /// Reset the count
-                    tasbihController.reset(index);
-
-                    /// Vibrate
-                    HapticFeedback.vibrate();
-
-                    /// Show notification
-                    Get.snackbar(
-                      'Tasbih direset',
-                      'Penghitung dikembalikan ke 0',
-                      boxShadows: [
-                        BoxShadow(
-                          offset: Offset(0, 3),
-                          blurRadius: 20,
-                          color: Colors.black26,
-                        ),
-                      ],
-                      mainButton: TextButton(
-                        child: Text(
-                          'Urungkan',
-                        ),
-                        onPressed: () {
-                          var isUndoDone = false;
-                          if (isUndoDone) {
-                            return;
-                          }
-                          var newUpdatedAt = tasbihController.tasbihs[index];
-                          newUpdatedAt.count = int.parse(countString);
-                          newUpdatedAt.updatedAt = updatedAtString;
-                          tasbihController.tasbihs[index] = newUpdatedAt;
-                          isUndoDone = true;
-                          print('[DATABASE] undo the reset');
-                          if (Get.isSnackbarOpen!) {
-                            Get.back();
-                          }
-                        },
-                      ),
-                    );
-
-                    /// Vibrate
-                    HapticFeedback.mediumImpact();
-                  },
+                  onPressed: () => _resetCounter(),
                 ),
               ),
             );
@@ -120,28 +72,7 @@ class Counter extends StatelessWidget {
               iconSize: 180,
               splashRadius: 180 / 2, // = (iconSize / 2)
               padding: const EdgeInsets.all(0),
-              onPressed: () {
-                tasbihController.increment(index);
-
-                /// Vibrate
-                if (tasbihController.tasbihs[index].count % 33 == 0 &&
-                    tasbihSettingsController.longVibrateEach33) {
-                  if (GetPlatform.isMobile) {
-                    Vibrate.vibrate();
-                    print(
-                        'long vibration at ${tasbihController.tasbihs[index].count}');
-                  }
-                } else if (tasbihController.tasbihs[index].count == 100 &&
-                    tasbihSettingsController.longVibrateAt100) {
-                  if (GetPlatform.isMobile) {
-                    Vibrate.vibrate();
-                    print(
-                        'long vibration at ${tasbihController.tasbihs[index].count}');
-                  }
-                } else {
-                  HapticFeedback.vibrate();
-                }
-              },
+              onPressed: () => _incrementCounter(),
             ),
           ),
           Obx(() {
@@ -155,12 +86,7 @@ class Counter extends StatelessWidget {
                 child: InkWell(
                   borderRadius: BorderRadius.all(Radius.circular(50)),
                   child: Icon(Icons.arrow_drop_down, size: 80),
-                  onTap: () {
-                    tasbihController.decrement(index);
-
-                    /// Vibrate
-                    HapticFeedback.vibrate();
-                  },
+                  onTap: () => _decrementCounter(),
                 ),
               ),
             );
@@ -168,5 +94,79 @@ class Counter extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  void _incrementCounter() {
+    tasbihController.increment(index);
+
+    /// Vibrate
+    if (tasbihController.tasbihs[index].count % 33 == 0 &&
+        tasbihSettingsController.longVibrateEach33) {
+      if (GetPlatform.isMobile) {
+        Vibrate.vibrate();
+        print('long vibration at ${tasbihController.tasbihs[index].count}');
+      }
+    } else if (tasbihController.tasbihs[index].count == 100 &&
+        tasbihSettingsController.longVibrateAt100) {
+      if (GetPlatform.isMobile) {
+        Vibrate.vibrate();
+        print('long vibration at ${tasbihController.tasbihs[index].count}');
+      }
+    } else {
+      HapticFeedback.vibrate();
+    }
+  }
+
+  void _decrementCounter() {
+    tasbihController.decrement(index);
+
+    /// Vibrate
+    HapticFeedback.vibrate();
+  }
+
+  void _resetCounter() {
+    /// Backup the count before resetting
+    var countString = tasbihController.tasbihs[index].count.toString();
+    var updatedAtString = tasbihController.tasbihs[index].updatedAt.toString();
+
+    /// Reset the count
+    tasbihController.reset(index);
+
+    /// Vibrate
+    HapticFeedback.vibrate();
+
+    /// Show notification
+    Get.snackbar(
+      'Tasbih direset',
+      'Penghitung dikembalikan ke 0',
+      boxShadows: [
+        BoxShadow(
+          offset: Offset(0, 3),
+          blurRadius: 20,
+          color: Colors.black26,
+        ),
+      ],
+      mainButton: TextButton(
+        child: Text('Urungkan'),
+        onPressed: () {
+          var isUndoDone = false;
+          if (isUndoDone) {
+            return;
+          }
+          var newUpdatedAt = tasbihController.tasbihs[index];
+          newUpdatedAt.count = int.parse(countString);
+          newUpdatedAt.updatedAt = updatedAtString;
+          tasbihController.tasbihs[index] = newUpdatedAt;
+          isUndoDone = true;
+          print('[DATABASE] undo the reset');
+          if (Get.isSnackbarOpen!) {
+            Get.back();
+          }
+        },
+      ),
+    );
+
+    /// Vibrate
+    HapticFeedback.mediumImpact();
   }
 }
