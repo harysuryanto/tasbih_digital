@@ -104,13 +104,13 @@ class Counter extends StatelessWidget {
         tasbihSettingsController.longVibrateEach33) {
       if (GetPlatform.isMobile) {
         Vibrate.vibrate();
-        print('long vibration at ${tasbihController.tasbihs[index].count}');
+        print('long vibration each 33');
       }
-    } else if (tasbihController.tasbihs[index].count == 100 &&
-        tasbihSettingsController.longVibrateAt100) {
+    } else if (tasbihController.tasbihs[index].count % 100 == 0 &&
+        tasbihSettingsController.longVibrateEach100) {
       if (GetPlatform.isMobile) {
         Vibrate.vibrate();
-        print('long vibration at ${tasbihController.tasbihs[index].count}');
+        print('long vibration each 100');
       }
     } else {
       HapticFeedback.vibrate();

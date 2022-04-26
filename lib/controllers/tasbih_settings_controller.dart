@@ -2,20 +2,20 @@ import 'package:get/state_manager.dart';
 import 'package:get_storage/get_storage.dart';
 
 class TasbihSettingsController extends GetxController {
-  var longVibrateEach33 = false;
-  var longVibrateAt100 = false;
+  bool longVibrateEach33 = false;
+  bool longVibrateEach100 = false;
 
   @override
   void onInit() {
     bool? storedLongVibrateEach33 = GetStorage().read('longVibrateEach33');
-    bool? storedLongVibrateAt100 = GetStorage().read('longVibrateAt100');
+    bool? storedLongVibrateEach100 = GetStorage().read('longVibrateEach100');
 
     if (storedLongVibrateEach33 != null) {
       longVibrateEach33 = storedLongVibrateEach33;
     }
 
-    if (storedLongVibrateAt100 != null) {
-      longVibrateAt100 = storedLongVibrateAt100;
+    if (storedLongVibrateEach100 != null) {
+      longVibrateEach100 = storedLongVibrateEach100;
     }
 
     super.onInit();
@@ -31,14 +31,14 @@ class TasbihSettingsController extends GetxController {
     saveToDatabase('longVibrateEach33', longVibrateEach33);
   }
 
-  void toggleLongVibrateAt100() {
-    longVibrateAt100 = !longVibrateAt100;
+  void toggleLongVibrateEach100() {
+    longVibrateEach100 = !longVibrateEach100;
 
     /// Update the UI
     update();
 
     /// Save to database
-    saveToDatabase('longVibrateAt100', longVibrateAt100);
+    saveToDatabase('longVibrateEach100', longVibrateEach100);
   }
 
   void saveToDatabase(String key, dynamic value) {

@@ -9,62 +9,65 @@ class DrawerContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(top: 20, left: 10),
-          child: Text('Pengaturan'),
-        ),
+    return SafeArea(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(top: 20, left: 10),
+            child: Text('Pengaturan'),
+          ),
 
-        /// Theme mode
-        ListTile(
-          leading: Icon(Icons.dark_mode_outlined),
-          title: Text('Mode gelap'),
-          trailing: ChangeThemeButton(),
-        ),
-
-        /// Only show on mobile platform
-        if (GetPlatform.isMobile) ...[
-          /// Long vibration at multiples of 33
+          /// Theme mode
           ListTile(
-            leading: Icon(Icons.vibration_outlined),
-            title: Text('Getar panjang setiap 33'),
-            trailing: GetBuilder<TasbihSettingsController>(
-              builder: (context) {
+            leading: Icon(Icons.dark_mode_outlined),
+            title: Text('Mode gelap'),
+            trailing: ChangeThemeButton(),
+          ),
+
+          /// Only show on mobile platform
+          if (GetPlatform.isMobile) ...[
+            /// Long vibration each 33
+            ListTile(
+              leading: Icon(Icons.vibration_outlined),
+              title: Text('Getar panjang di kelipatan 33'),
+              trailing: GetBuilder<TasbihSettingsController>(
+                builder: (context) {
+                  return Switch.adaptive(
+                    value: tasbihSettingsController.longVibrateEach33,
+                    onChanged: (_) {
+                      tasbihSettingsController.toggleLongVibrateEach33();
+                    },
+                  );
+                },
+              ),
+            ),
+
+            /// Long vibration each 100
+            ListTile(
+              leading: Icon(Icons.vibration_outlined),
+              title: Text('Getar panjang di kelipatan 100'),
+              trailing:
+                  GetBuilder<TasbihSettingsController>(builder: (context) {
                 return Switch.adaptive(
-                  value: tasbihSettingsController.longVibrateEach33,
-                  onChanged: (_) {
-                    tasbihSettingsController.toggleLongVibrateEach33();
+                  value: tasbihSettingsController.longVibrateEach100,
+                  onChanged: (value) {
+                    tasbihSettingsController.toggleLongVibrateEach100();
                   },
                 );
-              },
+              }),
             ),
-          ),
+          ],
 
-          /// Long vibration at 100
-          ListTile(
-            leading: Icon(Icons.vibration_outlined),
-            title: Text('Getar panjang pada 100'),
-            trailing: GetBuilder<TasbihSettingsController>(builder: (context) {
-              return Switch.adaptive(
-                value: tasbihSettingsController.longVibrateAt100,
-                onChanged: (value) {
-                  tasbihSettingsController.toggleLongVibrateAt100();
-                },
-              );
-            }),
+          Spacer(),
+
+          /// App version
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+            child: Center(child: Text('Versi 2.2.20')),
           ),
         ],
-
-        Spacer(),
-
-        /// App version
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
-          child: Center(child: Text('Versi 2.2.20')),
-        ),
-      ],
+      ),
     );
   }
 }
