@@ -9,7 +9,8 @@ class DrawerContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
           padding: const EdgeInsets.only(top: 20, left: 10),
@@ -55,6 +56,14 @@ class DrawerContent extends StatelessWidget {
             }),
           ),
         ],
+
+        Spacer(),
+
+        /// App version
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+          child: Center(child: Text('Versi 2.2.20')),
+        ),
       ],
     );
   }
