@@ -102,13 +102,13 @@ class Counter extends StatelessWidget {
     /// Vibrate
     if (tasbihController.tasbihs[index].count % 33 == 0 &&
         tasbihSettingsController.longVibrateEach33) {
-      if (GetPlatform.isMobile) {
+      if (GetPlatform.isMobile || (GetPlatform.isMobile && GetPlatform.isWeb)) {
         Vibrate.vibrate();
         print('long vibration each 33');
       }
     } else if (tasbihController.tasbihs[index].count % 100 == 0 &&
         tasbihSettingsController.longVibrateEach100) {
-      if (GetPlatform.isMobile) {
+      if (GetPlatform.isMobile || (GetPlatform.isMobile && GetPlatform.isWeb)) {
         Vibrate.vibrate();
         print('long vibration each 100');
       }
