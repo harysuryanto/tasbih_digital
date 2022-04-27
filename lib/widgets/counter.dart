@@ -100,13 +100,19 @@ class Counter extends StatelessWidget {
     tasbihController.increment(index);
 
     /// Vibrate
-    if (tasbihController.tasbihs[index].count % 33 == 0 &&
-        tasbihSettingsController.longVibrateEach33) {
-      _longVibrate();
-    } else if (tasbihController.tasbihs[index].count % 100 == 0 &&
-        tasbihSettingsController.longVibrateEach100) {
-      _longVibrate();
+    if (GetPlatform.isMobile && !GetPlatform.isWeb) {
+      /// On mobile platform
+      if (tasbihController.tasbihs[index].count % 33 == 0 &&
+          tasbihSettingsController.longVibrateEach33) {
+        _longVibrate();
+      } else if (tasbihController.tasbihs[index].count % 100 == 0 &&
+          tasbihSettingsController.longVibrateEach100) {
+        _longVibrate();
+      } else {
+        _vibrate();
+      }
     } else {
+      /// On any other platform
       _vibrate();
     }
   }
@@ -115,7 +121,7 @@ class Counter extends StatelessWidget {
     tasbihController.decrement(index);
 
     /// Vibrate
-    HapticFeedback.vibrate();
+    _vibrate();
   }
 
   void _resetCounter() {
