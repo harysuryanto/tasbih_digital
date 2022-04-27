@@ -107,29 +107,8 @@ class Counter extends StatelessWidget {
         tasbihSettingsController.longVibrateEach100) {
       _longVibrate();
     } else {
-      HapticFeedback.vibrate();
+      _vibrate();
     }
-  }
-
-  void _vibrate() {
-    if (GetPlatform.isMobile && !GetPlatform.isWeb) {
-      HapticFeedback.mediumImpact();
-    } else if (GetPlatform.isMobile && GetPlatform.isWeb) {
-      HapticFeedback
-          .heavyImpact(); // .heavyImpact() actually lighter than .lightImpact() on mobile web
-    }
-    print('short vibration');
-  }
-
-  void _longVibrate() {
-    if (GetPlatform.isMobile && !GetPlatform.isWeb) {
-      Vibrate.vibrate();
-    } else if (GetPlatform.isMobile && GetPlatform.isWeb) {
-      HapticFeedback.vibrate();
-      HapticFeedback.vibrate();
-      HapticFeedback.vibrate();
-    }
-    print('long vibration');
   }
 
   void _decrementCounter() {
@@ -146,9 +125,6 @@ class Counter extends StatelessWidget {
 
     /// Reset the count
     tasbihController.reset(index);
-
-    /// Vibrate
-    _vibrate();
 
     /// Show notification
     Get.snackbar(
@@ -180,5 +156,17 @@ class Counter extends StatelessWidget {
         },
       ),
     );
+  }
+
+  void _vibrate() {
+    HapticFeedback.mediumImpact();
+  }
+
+  void _longVibrate() {
+    if (GetPlatform.isMobile && !GetPlatform.isWeb) {
+      Vibrate.vibrate();
+    } else if (GetPlatform.isMobile && GetPlatform.isWeb) {
+      print('long vibration is not supported on mobile web');
+    }
   }
 }

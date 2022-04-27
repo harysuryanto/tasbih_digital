@@ -26,8 +26,7 @@ class DrawerContent extends StatelessWidget {
           ),
 
           /// Only show on mobile platform
-          if (GetPlatform.isMobile ||
-              (GetPlatform.isMobile && GetPlatform.isWeb)) ...[
+          if (GetPlatform.isMobile && !GetPlatform.isWeb) ...[
             /// Long vibration each 33
             ListTile(
               leading: Icon(Icons.vibration_outlined),
