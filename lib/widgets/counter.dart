@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
@@ -101,21 +102,34 @@ class Counter extends StatelessWidget {
     /// Vibrate
     if (tasbihController.tasbihs[index].count % 33 == 0 &&
         tasbihSettingsController.longVibrateEach33) {
-      if (GetPlatform.isMobile || (GetPlatform.isMobile && GetPlatform.isWeb)) {
-        // Vibrate.vibrate();
-        print('long vibration each 33');
-        HapticFeedback.heavyImpact();
-      }
+      _longVibrate();
     } else if (tasbihController.tasbihs[index].count % 100 == 0 &&
         tasbihSettingsController.longVibrateEach100) {
-      if (GetPlatform.isMobile || (GetPlatform.isMobile && GetPlatform.isWeb)) {
-        // Vibrate.vibrate();
-        print('long vibration each 100');
-        HapticFeedback.lightImpact();
-      }
+      _longVibrate();
     } else {
       HapticFeedback.vibrate();
     }
+  }
+
+  void _vibrate() {
+    if (GetPlatform.isMobile && !GetPlatform.isWeb) {
+      HapticFeedback.mediumImpact();
+    } else if (GetPlatform.isMobile && GetPlatform.isWeb) {
+      HapticFeedback
+          .heavyImpact(); // .heavyImpact() actually lighter than .lightImpact() on mobile web
+    }
+    print('short vibration');
+  }
+
+  void _longVibrate() {
+    if (GetPlatform.isMobile && !GetPlatform.isWeb) {
+      Vibrate.vibrate();
+    } else if (GetPlatform.isMobile && GetPlatform.isWeb) {
+      HapticFeedback.vibrate();
+      HapticFeedback.vibrate();
+      HapticFeedback.vibrate();
+    }
+    print('long vibration');
   }
 
   void _decrementCounter() {
@@ -134,7 +148,7 @@ class Counter extends StatelessWidget {
     tasbihController.reset(index);
 
     /// Vibrate
-    HapticFeedback.vibrate();
+    _vibrate();
 
     /// Show notification
     Get.snackbar(
@@ -166,8 +180,5 @@ class Counter extends StatelessWidget {
         },
       ),
     );
-
-    /// Vibrate
-    HapticFeedback.mediumImpact();
   }
 }
