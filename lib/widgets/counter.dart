@@ -111,7 +111,7 @@ class Counter extends StatelessWidget {
       if (GetPlatform.isMobile || (GetPlatform.isMobile && GetPlatform.isWeb)) {
         // Vibrate.vibrate();
         print('long vibration each 100');
-        HapticFeedback.selectionClick();
+        HapticFeedback.lightImpact();
       }
     } else {
       HapticFeedback.vibrate();
