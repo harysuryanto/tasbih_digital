@@ -18,8 +18,7 @@ class TasbihList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Obx(
       () => ListView.separated(
-        physics: BouncingScrollPhysics(),
-        padding: EdgeInsets.fromLTRB(30, 0, 30, 30),
+        padding: EdgeInsets.only(bottom: 30),
         itemCount: tasbihController.tasbihs.length,
         separatorBuilder: (context, index) => SizedBox(height: 15),
         itemBuilder: (context, index) {
@@ -74,6 +73,7 @@ class TasbihList extends StatelessWidget {
     final String formattedUpdatedAt = formatter.format(originalUpdatedAt);
 
     return Container(
+      margin: EdgeInsets.symmetric(horizontal: 30),
       decoration: BoxDecoration(
         color: Get.theme.backgroundColor,
         borderRadius: BorderRadius.all(Radius.circular(20)),
