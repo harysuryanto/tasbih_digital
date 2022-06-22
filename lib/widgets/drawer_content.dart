@@ -64,7 +64,7 @@ class DrawerContent extends StatelessWidget {
           /// App version
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
-            child: Center(child: Text('Versi 2.2.20')),
+            child: Center(child: Text('Versi 2.2.25')),
           ),
         ],
       ),
