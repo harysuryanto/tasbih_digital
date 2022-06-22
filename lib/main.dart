@@ -12,6 +12,8 @@ import 'screens/counter_screen.dart';
 import 'screens/home_screen.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
   /// Remove hash (#) from url
   setPathUrlStrategy();
 
@@ -19,7 +21,6 @@ void main() async {
   await GetStorage.init();
 
   /// For theming
-  WidgetsFlutterBinding.ensureInitialized();
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
