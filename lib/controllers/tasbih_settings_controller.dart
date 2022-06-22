@@ -42,8 +42,6 @@ class TasbihSettingsController extends GetxController {
   }
 
   void saveToDatabase(String key, dynamic value) {
-    print('Saving $key to database');
     GetStorage().write(key, value);
-    print('Value of $key: ${GetStorage().read(key)}');
   }
 }

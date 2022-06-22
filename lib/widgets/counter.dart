@@ -21,7 +21,6 @@ class Counter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
-    print('Screen height: $screenHeight');
 
     return Container(
       decoration: BoxDecoration(
@@ -155,7 +154,6 @@ class Counter extends StatelessWidget {
           newUpdatedAt.updatedAt = updatedAtString;
           tasbihController.tasbihs[index] = newUpdatedAt;
           isUndoDone = true;
-          print('[DATABASE] undo the reset');
           if (Get.isSnackbarOpen!) {
             Get.back();
           }

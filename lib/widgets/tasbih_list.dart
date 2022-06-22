@@ -67,8 +67,6 @@ class TasbihList extends StatelessWidget {
   }
 
   Widget _buildItem(var item, int index) {
-    print('[rendering] _buildItem()');
-
     /// Formatting the date
     DateTime originalUpdatedAt =
         DateTime.parse(tasbihController.tasbihs[index].updatedAt);
@@ -149,7 +147,6 @@ class TasbihList extends StatelessWidget {
 
           /// Reinsert the removed data to database
           tasbihController.tasbihs.insert(index, removed);
-          print('[DATABASE] undo the delete');
 
           removed = null;
           if (Get.isSnackbarOpen!) {

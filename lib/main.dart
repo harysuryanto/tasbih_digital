@@ -36,12 +36,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('[2] GetMaterialApp()');
-
     return GetBuilder<ThemeController>(
       builder: (context) {
-        print('[3] GetMaterialApp()');
-
         return GetMaterialApp(
           key: UniqueKey(),
           initialRoute: '/',
