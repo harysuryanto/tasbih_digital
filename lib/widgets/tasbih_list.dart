@@ -2,10 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_swipe_action_cell/core/cell.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_instance/src/extension_instance.dart';
-import 'package:get/get_navigation/src/extension_navigation.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 import '../controllers/tasbih_controller.dart';
@@ -149,7 +146,7 @@ class TasbihList extends StatelessWidget {
           tasbihController.tasbihs.insert(index, removed);
 
           removed = null;
-          if (Get.isSnackbarOpen!) {
+          if (Get.isSnackbarOpen) {
             Get.back();
           }
         },

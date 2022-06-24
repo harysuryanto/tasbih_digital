@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_navigation/src/extension_navigation.dart';
+import 'package:get/get.dart';
 
 class Guide extends StatelessWidget {
   @override
@@ -20,9 +19,7 @@ class Guide extends StatelessWidget {
             ),
           ),
           SizedBox(height: 20),
-          Text(
-            'Pilih tasbih ya...',
-          ),
+          Text('Pilih tasbih ya...'),
           SizedBox(height: 20),
         ],
       ),
