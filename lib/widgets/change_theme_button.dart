@@ -26,10 +26,11 @@ class _ChangeThemeButtonState extends State<ChangeThemeButton> {
           value: Get.isDarkMode,
           onChanged: (value) {
             setState(() => isProcessing = !isProcessing);
-
             themeController.toggleTheme();
 
-            Future.delayed(Duration(milliseconds: 1000)).then((value) {
+            // If the duration is less than 100 the UI will not
+            // update completely and will cause UI issue.
+            Future.delayed(Duration(milliseconds: 250)).then((value) {
               RestartWidget.restartApp(context);
               setState(() => isProcessing = !isProcessing);
             });
