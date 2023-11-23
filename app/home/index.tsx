@@ -1,4 +1,3 @@
-import { Text } from "react-native";
 import { FlashList } from "@shopify/flash-list";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "expo-router";
@@ -11,10 +10,12 @@ import {
   List,
   Portal,
   Snackbar,
+  Text,
   TextInput,
 } from "react-native-paper";
 import ScreenWrapper from "../../src/components/ScreenWrapper";
 import { vibrate } from "../../src/utils/vibrate";
+import appJson from "../../app.json";
 
 export default function index() {
   const router = useRouter();
@@ -91,6 +92,9 @@ export default function index() {
         )}
         estimatedItemSize={200}
       />
+      <Text variant="bodySmall" style={{ padding: 8, textAlign: "center" }}>
+        Versi {appJson.expo.version}
+      </Text>
       <Portal>
         <Dialog visible={modalVisible} onDismiss={() => setModalVisible(false)}>
           <Dialog.Title>
