@@ -10,6 +10,7 @@ import 'controllers/theme_controller.dart';
 import 'models/theme_model.dart';
 import 'screens/counter_screen.dart';
 import 'screens/home_screen.dart';
+import 'widgets/restart_widget.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,7 +27,7 @@ void main() async {
     DeviceOrientation.portraitDown,
   ]);
 
-  runApp(MyApp());
+  runApp(RestartWidget(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
