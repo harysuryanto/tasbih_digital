@@ -34,7 +34,11 @@ export default function index() {
   return (
     <ScreenWrapper withScrollView={false}>
       <Appbar.Header>
-        {router.canGoBack() && <Appbar.BackAction onPress={router.back} />}
+        <Appbar.BackAction
+          onPress={() => {
+            router.canGoBack() ? router.back() : router.replace("/home");
+          }}
+        />
         <Appbar.Content title={tasbeeh?.name} />
       </Appbar.Header>
       <View style={styles.body}>
