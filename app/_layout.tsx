@@ -3,6 +3,7 @@ import { useFonts } from "expo-font";
 import { SplashScreen, Stack } from "expo-router";
 import { useEffect } from "react";
 import { PaperProvider } from "react-native-paper";
+import { checkOtaUpdate } from "../src/utils/ota-update";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -26,6 +27,7 @@ export default function RootLayout() {
   useEffect(() => {
     if (loaded) {
       SplashScreen.hideAsync();
+      checkOtaUpdate();
     }
   }, [loaded]);
 

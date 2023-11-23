@@ -36,7 +36,8 @@
     "react-native-web": "~0.19.6",
     "zustand": "^4.4.6",
     "expo-crypto": "~12.4.1",
-    "expo-haptics": "~12.4.0"
+    "expo-haptics": "~12.4.0",
+    "expo-updates": "~0.18.17"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
