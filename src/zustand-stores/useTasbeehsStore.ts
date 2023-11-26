@@ -1,6 +1,7 @@
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
+import { createJSONStorage, persist } from "zustand/middleware";
 import * as Crypto from "expo-crypto";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 type Store = {
   tasbeehs: Tasbeeh[];
@@ -140,6 +141,7 @@ const useTasbeehsStore = create<Store>()(
     }),
     {
       name: "tasbeehs-storage",
+      storage: createJSONStorage(() => AsyncStorage),
     }
   )
 );
