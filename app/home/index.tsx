@@ -1,5 +1,6 @@
 import { FlashList } from "@shopify/flash-list";
 import React, { useEffect, useState } from "react";
+import { StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
 import useTasbeehsStore from "../../src/zustand-stores/useTasbeehsStore";
 import moment from "moment";
@@ -69,29 +70,35 @@ export default function index() {
         <Appbar.Content title="Pilih tasbihmu" />
         <Appbar.Action icon="plus" onPress={() => setModalVisible(true)} />
       </Appbar.Header>
-      <FlashList
-        data={tasbeehs}
-        renderItem={({ item }) => (
-          <List.Item
-            title={item.name}
-            description={
-              item.usedAt
-                ? "Digunakan pada " + moment(item.usedAt).format("D MMM YYYY")
-                : "Belum pernah digunakan"
-            }
-            right={({ color, style }) => (
-              <Text style={{ ...style, color }}>{item.count}</Text>
-            )}
-            onPress={() => router.push(`/counter/${item.id}`)}
-            onLongPress={() => {
-              setModalVisible(true);
-              setSelectedTasbeeh(item);
-              setTasbeehName(item.name);
-            }}
-          />
-        )}
-        estimatedItemSize={200}
-      />
+      {tasbeehs.length === 0 ? (
+        <Text variant="bodyMedium" style={styles.noDataText}>
+          Tidak ada tasbih. Tekan tombol + untuk menambah tasbih.
+        </Text>
+      ) : (
+        <FlashList
+          data={tasbeehs}
+          renderItem={({ item }) => (
+            <List.Item
+              title={item.name}
+              description={
+                item.usedAt
+                  ? "Digunakan pada " + moment(item.usedAt).format("D MMM YYYY")
+                  : "Belum pernah digunakan"
+              }
+              right={({ color, style }) => (
+                <Text style={{ ...style, color }}>{item.count}</Text>
+              )}
+              onPress={() => router.push(`/counter/${item.id}`)}
+              onLongPress={() => {
+                setModalVisible(true);
+                setSelectedTasbeeh(item);
+                setTasbeehName(item.name);
+              }}
+            />
+          )}
+          estimatedItemSize={200}
+        />
+      )}
       <Text variant="bodySmall" style={{ padding: 8, textAlign: "center" }}>
         Versi {appJson.expo.version}
       </Text>
@@ -129,3 +136,11 @@ export default function index() {
     </ScreenWrapper>
   );
 }
+
+const styles = StyleSheet.create({
+  noDataText: {
+    flex: 1,
+    textAlign: "center",
+    textAlignVertical: "center",
+  },
+});
