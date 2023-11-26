@@ -124,7 +124,7 @@ export default function index() {
         onDismiss={() => setRemovedTasbeeh(undefined)}
         action={{ label: "Urungkan", onPress: handleUndoRemoveTasbeeh }}
       >
-        {removedTasbeeh?.tasbeeh.name} dihapus
+        {`${removedTasbeeh?.tasbeeh.name} dihapus`}
       </Snackbar>
     </ScreenWrapper>
   );
