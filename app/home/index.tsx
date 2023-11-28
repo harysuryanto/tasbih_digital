@@ -16,6 +16,7 @@ import {
 } from "react-native-paper";
 import ScreenWrapper from "../../src/components/ScreenWrapper";
 import { vibrate } from "../../src/utils/vibrate";
+import Toast from "react-native-simple-toast";
 import appJson from "../../app.json";
 
 export default function index() {
@@ -36,7 +37,19 @@ export default function index() {
     }
   }, [modalVisible]);
 
+  const tasbeehExists = (name: string) => {
+    return tasbeehs.find((tasbeeh) => tasbeeh.name === name) !== undefined;
+  };
+
   const handleSubmitForm = () => {
+    if (tasbeehExists(tasbeehName)) {
+      Toast.show(
+        "Sudah ada tasbih dengan nama yang sama, gunakan nama lain.",
+        Toast.LONG
+      );
+      return;
+    }
+
     if (selectedTasbeeh === undefined) {
       add(tasbeehName);
     } else {
@@ -45,6 +58,7 @@ export default function index() {
         name: tasbeehName,
       });
     }
+
     setModalVisible(false);
   };
 
