@@ -38,7 +38,11 @@ export default function index() {
   }, [modalVisible]);
 
   const tasbeehExists = (name: string) => {
-    return tasbeehs.find((tasbeeh) => tasbeeh.name === name) !== undefined;
+    return (
+      tasbeehs.find(
+        (tasbeeh) => tasbeeh.name.toLowerCase() === name.toLowerCase()
+      ) !== undefined
+    );
   };
 
   const handleSubmitForm = () => {
@@ -51,11 +55,11 @@ export default function index() {
     }
 
     if (selectedTasbeeh === undefined) {
-      add(tasbeehName);
+      add(tasbeehName.trim());
     } else {
       edit({
         ...selectedTasbeeh!,
-        name: tasbeehName,
+        name: tasbeehName.trim(),
       });
     }
 
