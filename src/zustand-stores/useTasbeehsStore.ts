@@ -1,6 +1,5 @@
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
-import * as Crypto from "expo-crypto";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 type Store = {
@@ -14,6 +13,8 @@ type Store = {
   reset: (id: string) => void;
 };
 
+const generateId = () => Date.now().toString();
+
 const getCurrentDateTime = (): number => {
   const currentDatetime = new Date();
   return currentDatetime.getTime();
@@ -24,7 +25,7 @@ const useTasbeehsStore = create<Store>()(
     (set, get) => ({
       tasbeehs: [
         {
-          id: Crypto.randomUUID(),
+          id: generateId(),
           name: "SubhanAllah",
           count: 0,
           usedAt: 0,
@@ -36,7 +37,7 @@ const useTasbeehsStore = create<Store>()(
         const newItem =
           typeof value === "string"
             ? ({
-                id: Crypto.randomUUID(),
+                id: generateId(),
                 name: value,
                 count: 0,
                 usedAt: 0,
