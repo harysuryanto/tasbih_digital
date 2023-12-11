@@ -1,6 +1,9 @@
 import * as Haptics from "expo-haptics";
 import { Platform } from "react-native";
 
+/**
+ * Works only on mobile (android and ios). Nothing happens on other platforms.
+ */
 export const vibrate = (power: "light" | "medium" | "heavy") => {
   if (Platform.OS === "android" || Platform.OS === "ios") {
     if (power === "light") {
