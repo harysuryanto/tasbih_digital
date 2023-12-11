@@ -42,7 +42,7 @@ function RootLayoutNav() {
   return (
     <PaperProvider>
       <Stack screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="home/index" options={{ title: "Beranda" }} />
+        <Stack.Screen name="(tabs)" />
         <Stack.Screen
           name="counter/[tasbeehId]"
           options={{ title: "Tasbih" }}

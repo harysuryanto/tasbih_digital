@@ -2,7 +2,7 @@ import { FlashList } from "@shopify/flash-list";
 import React, { useEffect, useState } from "react";
 import { StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
-import useTasbeehsStore from "../../src/zustand-stores/useTasbeehsStore";
+import useTasbeehsStore from "../../../src/zustand-stores/useTasbeehsStore";
 import moment from "moment";
 import {
   Appbar,
@@ -14,10 +14,10 @@ import {
   Text,
   TextInput,
 } from "react-native-paper";
-import ScreenWrapper from "../../src/components/ScreenWrapper";
-import { vibrate } from "../../src/utils/vibrate";
+import ScreenWrapper from "../../../src/components/ScreenWrapper";
+import { vibrate } from "../../../src/utils/vibrate";
 import Toast from "react-native-simple-toast";
-import appJson from "../../app.json";
+import appJson from "../../../app.json";
 
 export default function index() {
   const router = useRouter();
