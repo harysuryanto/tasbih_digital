@@ -6,6 +6,7 @@ import ScreenWrapper from "../../src/components/ScreenWrapper";
 import { Appbar, IconButton, Snackbar } from "react-native-paper";
 import { Text } from "react-native-paper";
 import { vibrate } from "../../src/utils/vibrate";
+import useSettingsStore from "../../src/zustand-stores/useSettingsStore";
 
 export default function index() {
   const router = useRouter();
@@ -14,6 +15,7 @@ export default function index() {
   const { tasbeehs, setCount, increment, decrement, reset } =
     useTasbeehsStore();
   const tasbeeh = tasbeehs.find((value) => value.id === tasbeehId);
+  const { vibrationEvery33, vibrationEvery100 } = useSettingsStore();
   const [countBeforeResetted, setCountBeforeResetted] = useState<
     number | undefined
   >(undefined);
@@ -23,6 +25,23 @@ export default function index() {
   const handleReset = () => {
     reset(tasbeeh!.id);
     setSnackbarVisible(true);
+  };
+
+  const handleIncrement = () => {
+    if (vibrationEvery33 && tasbeeh!.count % 33 == 0) {
+      vibrate("medium");
+    } else if (vibrationEvery100 && tasbeeh!.count % 100 == 0) {
+      vibrate("heavy");
+    } else {
+      vibrate("light");
+    }
+
+    increment(tasbeeh!.id);
+  };
+
+  const handleDecrement = () => {
+    vibrate("light");
+    decrement(tasbeeh!.id);
   };
 
   useEffect(() => {
@@ -50,23 +69,13 @@ export default function index() {
           style={{ opacity: tasbeeh?.count === 0 ? 0 : 1 }}
           onPress={handleReset}
         />
-        <IconButton
-          icon="menu-up"
-          size={160}
-          onPress={() => {
-            vibrate("light");
-            increment(tasbeeh!.id);
-          }}
-        />
+        <IconButton icon="menu-up" size={160} onPress={handleIncrement} />
         <IconButton
           icon="menu-down"
           size={80}
           disabled={tasbeeh?.count === 0}
           style={{ opacity: tasbeeh?.count === 0 ? 0 : 1 }}
-          onPress={() => {
-            vibrate("light");
-            decrement(tasbeeh!.id);
-          }}
+          onPress={handleDecrement}
         />
       </View>
       <Snackbar
