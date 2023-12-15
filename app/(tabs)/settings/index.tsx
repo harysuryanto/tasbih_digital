@@ -2,16 +2,8 @@ import React from "react";
 import ScreenWrapper from "../../../src/components/ScreenWrapper";
 import { Appbar, List, Switch } from "react-native-paper";
 import useSettingsStore from "../../../src/zustand-stores/useSettingsStore";
-import {
-  TestIds,
-  BannerAd,
-  BannerAdSize,
-} from "react-native-google-mobile-ads";
 import { View } from "react-native";
-
-const adUnitId = __DEV__
-  ? TestIds.ADAPTIVE_BANNER
-  : "ca-app-pub-9675217052405779/3677822299";
+import MyBannerAd from "../../../src/components/MyBannerAd";
 
 export default function index() {
   const {
@@ -49,10 +41,7 @@ export default function index() {
           />
         </List.Section>
       </View>
-      <BannerAd
-        unitId={adUnitId!}
-        size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
-      />
+      <MyBannerAd adUnitId="ca-app-pub-9675217052405779/3677822299" />
     </ScreenWrapper>
   );
 }

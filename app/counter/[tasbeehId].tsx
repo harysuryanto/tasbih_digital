@@ -7,15 +7,7 @@ import { Appbar, IconButton, Snackbar } from "react-native-paper";
 import { Text } from "react-native-paper";
 import { vibrate } from "../../src/utils/vibrate";
 import useSettingsStore from "../../src/zustand-stores/useSettingsStore";
-import {
-  TestIds,
-  BannerAd,
-  BannerAdSize,
-} from "react-native-google-mobile-ads";
-
-const adUnitId = __DEV__
-  ? TestIds.ADAPTIVE_BANNER
-  : "ca-app-pub-9675217052405779/5673430244";
+import MyBannerAd from "../../src/components/MyBannerAd";
 
 export default function index() {
   const router = useRouter();
@@ -87,10 +79,7 @@ export default function index() {
           onPress={handleDecrement}
         />
       </View>
-      <BannerAd
-        unitId={adUnitId!}
-        size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
-      />
+      <MyBannerAd adUnitId="ca-app-pub-9675217052405779/5673430244" />
       <Snackbar
         visible={snackbarVisible}
         onDismiss={() => setSnackbarVisible(false)}
