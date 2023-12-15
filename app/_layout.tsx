@@ -4,6 +4,7 @@ import { SplashScreen, Stack } from "expo-router";
 import { useEffect } from "react";
 import { PaperProvider } from "react-native-paper";
 import { checkOtaUpdate } from "../src/utils/ota-update";
+import "expo-dev-client";
 
 export {
   // Catch any errors thrown by the Layout component.

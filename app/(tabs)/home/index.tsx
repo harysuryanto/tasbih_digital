@@ -18,6 +18,15 @@ import ScreenWrapper from "../../../src/components/ScreenWrapper";
 import { vibrate } from "../../../src/utils/vibrate";
 import Toast from "react-native-simple-toast";
 import appJson from "../../../app.json";
+import {
+  TestIds,
+  BannerAd,
+  BannerAdSize,
+} from "react-native-google-mobile-ads";
+
+const adUnitId = __DEV__
+  ? TestIds.ADAPTIVE_BANNER
+  : "ca-app-pub-9675217052405779/2293939504";
 
 export default function index() {
   const router = useRouter();
@@ -120,6 +129,10 @@ export default function index() {
       <Text variant="bodySmall" style={{ padding: 8, textAlign: "center" }}>
         Versi {appJson.expo.version}
       </Text>
+      <BannerAd
+        unitId={adUnitId!}
+        size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
+      />
       <Portal>
         <Dialog visible={modalVisible} onDismiss={() => setModalVisible(false)}>
           <Dialog.Title>
