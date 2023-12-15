@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { StyleSheet } from "react-native";
 import {
   TestIds,
   BannerAd,
@@ -26,12 +25,3 @@ export default function MyBannerAd({ adUnitId }: Props) {
     />
   );
 }
-
-const styles = StyleSheet.create({
-  errorContainer: {
-    flexDirection: "row",
-    justifyContent: "center",
-    margin: 8,
-  },
-  errorDetailPressable: { textDecorationLine: "underline" },
-});
