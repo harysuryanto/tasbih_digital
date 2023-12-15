@@ -38,7 +38,7 @@ export default function index() {
 
   const handleIncrement = () => {
     if (vibrationEvery33 && tasbeeh!.count % 33 == 0) {
-      vibrate("medium");
+      vibrate("heavy");
     } else if (vibrationEvery100 && tasbeeh!.count % 100 == 0) {
       vibrate("heavy");
     } else {
