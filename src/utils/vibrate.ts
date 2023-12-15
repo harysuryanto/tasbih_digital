@@ -9,9 +9,9 @@ export const vibrate = (power: "light" | "medium" | "heavy") => {
     if (power === "light") {
       Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     } else if (power === "medium") {
-      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+      Haptics.selectionAsync();
     } else if (power === "heavy") {
-      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning);
     }
   }
 };
