@@ -1,5 +1,5 @@
 import { StyleSheet, View } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import useTasbeehsStore from "../../src/zustand-stores/useTasbeehsStore";
 import ScreenWrapper from "../../src/components/ScreenWrapper";
@@ -28,17 +28,18 @@ export default function index() {
     setSnackbarVisible(true);
   };
 
-  const handleIncrement = () => {
-    if (vibrationEvery33 && tasbeeh!.count % 33 == 0) {
-      vibrate("heavy");
-    } else if (vibrationEvery100 && tasbeeh!.count % 100 == 0) {
+  const handleIncrement = useCallback(() => {
+    if (
+      (vibrationEvery33 && tasbeeh!.count % 33 == 0) ||
+      (vibrationEvery100 && tasbeeh!.count % 100 == 0)
+    ) {
       vibrate("heavy");
     } else {
       vibrate("light");
     }
 
     increment(tasbeeh!.id);
-  };
+  }, [tasbeeh?.count]);
 
   const handleDecrement = () => {
     vibrate("light");
