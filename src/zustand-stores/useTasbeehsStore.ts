@@ -60,7 +60,7 @@ const useTasbeehsStore = create<Store>()(
               return {
                 ...tasbeeh,
                 updatedAt: getCurrentDateTime(),
-              } satisfies Tasbeeh;
+              } satisfies typeof value;
             }
             return value;
           }),
@@ -91,7 +91,7 @@ const useTasbeehsStore = create<Store>()(
                 count: count,
                 usedAt: getCurrentDateTime(),
                 updatedAt: getCurrentDateTime(),
-              } satisfies Tasbeeh;
+              } satisfies typeof value;
             }
             return value;
           }),
@@ -99,30 +99,27 @@ const useTasbeehsStore = create<Store>()(
       increment: (id) =>
         set((state) => ({
           tasbeehs: state.tasbeehs.map((value) => {
-            if (id === value.id) {
-              return {
-                ...value,
-                count: value.count + 1,
-                usedAt: getCurrentDateTime(),
-                updatedAt: getCurrentDateTime(),
-              } satisfies Tasbeeh;
-            }
-            return value;
+            return id === value.id
+              ? ({
+                  ...value,
+                  count: value.count + 1,
+                  usedAt: getCurrentDateTime(),
+                  updatedAt: getCurrentDateTime(),
+                } satisfies typeof value)
+              : value;
           }),
         })),
       decrement: (id) =>
         set((state) => ({
           tasbeehs: state.tasbeehs.map((value) => {
-            if (id === value.id) {
-              const newCount = value.count > 0 ? value.count - 1 : 0;
-              return {
-                ...value,
-                count: newCount,
-                usedAt: getCurrentDateTime(),
-                updatedAt: getCurrentDateTime(),
-              } satisfies Tasbeeh;
-            }
-            return value;
+            return id === value.id
+              ? ({
+                  ...value,
+                  count: value.count > 0 ? value.count - 1 : 0,
+                  usedAt: getCurrentDateTime(),
+                  updatedAt: getCurrentDateTime(),
+                } satisfies typeof value)
+              : value;
           }),
         })),
       reset: (id) =>
@@ -134,7 +131,7 @@ const useTasbeehsStore = create<Store>()(
                 count: 0,
                 usedAt: getCurrentDateTime(),
                 updatedAt: getCurrentDateTime(),
-              } satisfies Tasbeeh;
+              } satisfies typeof value;
             }
             return value;
           }),
