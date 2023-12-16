@@ -15,7 +15,7 @@ export default function index() {
   const { tasbeehId } = useLocalSearchParams();
   const { tasbeehs, setCount, increment, decrement, reset } =
     useTasbeehsStore();
-  const tasbeeh = tasbeehs.find((value) => value.id === tasbeehId);
+  const tasbeeh = tasbeehs.find((value) => value.id === tasbeehId)!;
   const { vibrationEvery33, vibrationEvery100 } = useSettingsStore();
   const [countBeforeResetted, setCountBeforeResetted] = useState<
     number | undefined
@@ -24,33 +24,33 @@ export default function index() {
   const [snackbarVisible, setSnackbarVisible] = useState(false);
 
   const handleReset = () => {
-    reset(tasbeeh!.id);
+    reset(tasbeeh.id);
     setSnackbarVisible(true);
   };
 
   const handleIncrement = useCallback(() => {
     if (
-      (vibrationEvery33 && tasbeeh!.count % 33 == 0) ||
-      (vibrationEvery100 && tasbeeh!.count % 100 == 0)
+      (vibrationEvery33 && tasbeeh.count % 33 == 0) ||
+      (vibrationEvery100 && tasbeeh.count % 100 == 0)
     ) {
       vibrate("heavy");
     } else {
       vibrate("light");
     }
 
-    increment(tasbeeh!.id);
-  }, [tasbeeh?.count]);
+    increment(tasbeeh.id);
+  }, [tasbeeh.count]);
 
   const handleDecrement = () => {
     vibrate("light");
-    decrement(tasbeeh!.id);
+    decrement(tasbeeh.id);
   };
 
   useEffect(() => {
-    if (tasbeeh?.count !== 0) {
-      setCountBeforeResetted(tasbeeh?.count);
+    if (tasbeeh.count !== 0) {
+      setCountBeforeResetted(tasbeeh.count);
     }
-  }, [tasbeeh?.count]);
+  }, [tasbeeh.count]);
 
   return (
     <ScreenWrapper withScrollView={false}>
@@ -60,23 +60,23 @@ export default function index() {
             router.canGoBack() ? router.back() : router.replace("/home");
           }}
         />
-        <Appbar.Content title={tasbeeh?.name} />
+        <Appbar.Content title={tasbeeh.name} />
       </Appbar.Header>
       <View style={styles.body}>
-        <Text style={styles.count}>{tasbeeh!.count}</Text>
+        <Text style={styles.count}>{tasbeeh.count}</Text>
         <IconButton
           icon="refresh"
           size={30}
-          disabled={tasbeeh?.count === 0}
-          style={{ opacity: tasbeeh?.count === 0 ? 0 : 1 }}
+          disabled={tasbeeh.count === 0}
+          style={{ opacity: tasbeeh.count === 0 ? 0 : 1 }}
           onPress={handleReset}
         />
         <IconButton icon="menu-up" size={160} onPress={handleIncrement} />
         <IconButton
           icon="menu-down"
           size={80}
-          disabled={tasbeeh?.count === 0}
-          style={{ opacity: tasbeeh?.count === 0 ? 0 : 1 }}
+          disabled={tasbeeh.count === 0}
+          style={{ opacity: tasbeeh.count === 0 ? 0 : 1 }}
           onPress={handleDecrement}
         />
       </View>
@@ -86,7 +86,7 @@ export default function index() {
         onDismiss={() => setSnackbarVisible(false)}
         action={{
           label: "Urungkan",
-          onPress: () => setCount(tasbeeh!.id, countBeforeResetted!),
+          onPress: () => setCount(tasbeeh.id, countBeforeResetted!),
         }}
       >
         Penghitung dikembalikan ke 0
