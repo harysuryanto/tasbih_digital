@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import { NetInfoStateType, useNetInfo } from "@react-native-community/netinfo";
+import React, { useEffect, useState } from "react";
 import {
   TestIds,
   BannerAd,
@@ -10,9 +11,16 @@ type Props = {
 };
 
 function MyBannerAd({ adUnitId }: Props) {
+  const { type: networkType } = useNetInfo();
+
+  const [isWifi, setIsWifi] = useState(false);
   const [error, setError] = useState<Error | undefined>();
 
-  if (error) return null;
+  useEffect(() => {
+    setIsWifi(networkType === NetInfoStateType.wifi);
+  }, [networkType]);
+
+  if (!isWifi || error) return null;
 
   return (
     <BannerAd
