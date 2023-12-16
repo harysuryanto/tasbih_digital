@@ -1,9 +1,10 @@
 import React from "react";
 import ScreenWrapper from "../../../src/components/ScreenWrapper";
-import { Appbar, List, Switch } from "react-native-paper";
+import { Appbar, List, Switch, Text } from "react-native-paper";
 import useSettingsStore from "../../../src/zustand-stores/useSettingsStore";
 import { View } from "react-native";
 import MyBannerAd from "../../../src/components/MyBannerAd";
+import appJson from "../../../app.json";
 
 export default function index() {
   const {
@@ -41,6 +42,9 @@ export default function index() {
           />
         </List.Section>
       </View>
+      <Text variant="bodySmall" style={{ padding: 8, textAlign: "center" }}>
+        Versi {appJson.expo.version}
+      </Text>
       <MyBannerAd adUnitId="ca-app-pub-9675217052405779/3677822299" />
     </ScreenWrapper>
   );

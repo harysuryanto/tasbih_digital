@@ -16,7 +16,6 @@ import {
 import ScreenWrapper from "../../../src/components/ScreenWrapper";
 import { vibrate } from "../../../src/utils/vibrate";
 import Toast from "react-native-simple-toast";
-import appJson from "../../../app.json";
 import BannerAdsInHome from "../../../src/components/BannerAdsInHome";
 
 export default function index() {
@@ -122,9 +121,6 @@ export default function index() {
           </>
         </ScrollView>
       )}
-      <Text variant="bodySmall" style={{ padding: 8, textAlign: "center" }}>
-        Versi {appJson.expo.version}
-      </Text>
       <Portal>
         <Dialog visible={modalVisible} onDismiss={() => setModalVisible(false)}>
           <Dialog.Title>
