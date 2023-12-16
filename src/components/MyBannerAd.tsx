@@ -9,7 +9,7 @@ type Props = {
   adUnitId: string;
 };
 
-export default function MyBannerAd({ adUnitId }: Props) {
+function MyBannerAd({ adUnitId }: Props) {
   const [error, setError] = useState<Error | undefined>();
 
   if (error) return null;
@@ -25,3 +25,5 @@ export default function MyBannerAd({ adUnitId }: Props) {
     />
   );
 }
+
+export default React.memo(MyBannerAd);

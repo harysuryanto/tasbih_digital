@@ -1,6 +1,5 @@
-import { FlashList } from "@shopify/flash-list";
 import React, { useEffect, useState } from "react";
-import { StyleSheet } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
 import { useRouter } from "expo-router";
 import useTasbeehsStore from "../../../src/zustand-stores/useTasbeehsStore";
 import moment from "moment";
@@ -18,7 +17,7 @@ import ScreenWrapper from "../../../src/components/ScreenWrapper";
 import { vibrate } from "../../../src/utils/vibrate";
 import Toast from "react-native-simple-toast";
 import appJson from "../../../app.json";
-import MyBannerAd from "../../../src/components/MyBannerAd";
+import BannerAdsInHome from "../../../src/components/BannerAdsInHome";
 
 export default function index() {
   const router = useRouter();
@@ -94,34 +93,38 @@ export default function index() {
           Tidak ada tasbih. Tekan tombol + untuk menambah tasbih.
         </Text>
       ) : (
-        <FlashList
-          data={tasbeehs}
-          renderItem={({ item }) => (
-            <List.Item
-              title={item.name}
-              description={
-                item.usedAt
-                  ? "Digunakan pada " + moment(item.usedAt).format("D MMM YYYY")
-                  : "Belum pernah digunakan"
-              }
-              right={({ color, style }) => (
-                <Text style={{ ...style, color }}>{item.count}</Text>
-              )}
-              onPress={() => router.push(`/counter/${item.id}`)}
-              onLongPress={() => {
-                setModalVisible(true);
-                setSelectedTasbeeh(item);
-                setTasbeehName(item.name);
-              }}
-            />
-          )}
-          estimatedItemSize={200}
-        />
+        <ScrollView>
+          <>
+            {tasbeehs.map((tasbeeh) => (
+              <List.Item
+                key={tasbeeh.id}
+                title={tasbeeh.name}
+                description={
+                  tasbeeh.usedAt
+                    ? "Digunakan pada " +
+                      moment(tasbeeh.usedAt).format("D MMM YYYY")
+                    : "Belum pernah digunakan"
+                }
+                right={({ color, style }) => (
+                  <Text style={{ ...style, color }}>{tasbeeh.count}</Text>
+                )}
+                onPress={() => router.push(`/counter/${tasbeeh.id}`)}
+                onLongPress={() => {
+                  setModalVisible(true);
+                  setSelectedTasbeeh(tasbeeh);
+                  setTasbeehName(tasbeeh.name);
+                }}
+              />
+            ))}
+            <View style={{ marginTop: 100 }}>
+              <BannerAdsInHome />
+            </View>
+          </>
+        </ScrollView>
       )}
       <Text variant="bodySmall" style={{ padding: 8, textAlign: "center" }}>
         Versi {appJson.expo.version}
       </Text>
-      <MyBannerAd adUnitId="ca-app-pub-9675217052405779/2293939504" />
       <Portal>
         <Dialog visible={modalVisible} onDismiss={() => setModalVisible(false)}>
           <Dialog.Title>
