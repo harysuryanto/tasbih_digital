@@ -17,7 +17,7 @@ const getCurrentDateTime = (): number => {
 const useSettingsStore = create<Store>()(
   persist(
     (set) => ({
-      vibrationEvery33: true,
+      vibrationEvery33: false,
       vibrationEvery100: false,
       setVibrationEvery33: (vibrate) =>
         set(() => ({ vibrationEvery33: vibrate })),
