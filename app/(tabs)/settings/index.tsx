@@ -1,7 +1,7 @@
 import React from "react";
 import ScreenWrapper from "../../../src/components/ScreenWrapper";
 import { Appbar, List, Switch, Text } from "react-native-paper";
-import useSettingsStore from "../../../src/zustand-stores/useSettingsStore";
+import useSettingsStore from "../../../src/stores/useSettingsStore";
 import { View } from "react-native";
 import MyBannerAd from "../../../src/components/MyBannerAd";
 import appJson from "../../../app.json";

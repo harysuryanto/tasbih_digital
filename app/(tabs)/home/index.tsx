@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 import { useRouter } from "expo-router";
-import useTasbeehsStore from "../../../src/zustand-stores/useTasbeehsStore";
+import useTasbeehsStore from "../../../src/stores/useTasbeehsStore";
 import moment from "moment";
 import {
   Appbar,

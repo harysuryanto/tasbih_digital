@@ -1,12 +1,12 @@
 import { StyleSheet, View } from "react-native";
 import React, { useCallback, useEffect, useState } from "react";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import useTasbeehsStore from "../../src/zustand-stores/useTasbeehsStore";
+import useTasbeehsStore from "../../src/stores/useTasbeehsStore";
 import ScreenWrapper from "../../src/components/ScreenWrapper";
 import { Appbar, IconButton, Snackbar } from "react-native-paper";
 import { Text } from "react-native-paper";
 import { vibrate } from "../../src/utils/vibrate";
-import useSettingsStore from "../../src/zustand-stores/useSettingsStore";
+import useSettingsStore from "../../src/stores/useSettingsStore";
 import MyBannerAd from "../../src/components/MyBannerAd";
 
 export default function index() {
