@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { ScrollView, StyleSheet, View } from "react-native";
+import { ScrollView, StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
 import useTasbeehsStore from "../../../src/stores/useTasbeehsStore";
 import moment from "moment";
@@ -115,9 +115,7 @@ export default function index() {
                 }}
               />
             ))}
-            <View style={{ marginTop: 100 }}>
-              <BannerAdsInHome />
-            </View>
+            <BannerAdsInHome containerStyle={{ marginTop: 100 }} />
           </>
         </ScrollView>
       )}

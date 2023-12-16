@@ -8,9 +8,13 @@ import {
 
 type Props = {
   adUnitId: string;
+  /***
+   * @default false
+   */
+  keepLayoutOnLoadFailed?: boolean;
 };
 
-function MyBannerAd({ adUnitId }: Props) {
+function MyBannerAd({ adUnitId, keepLayoutOnLoadFailed = false }: Props) {
   const { type: networkType } = useNetInfo();
 
   const [isWifi, setIsWifi] = useState(false);
@@ -20,7 +24,7 @@ function MyBannerAd({ adUnitId }: Props) {
     setIsWifi(networkType === NetInfoStateType.wifi);
   }, [networkType]);
 
-  if (!isWifi || error) return null;
+  if ((!isWifi || error) && !keepLayoutOnLoadFailed) return null;
 
   return (
     <BannerAd

@@ -1,10 +1,15 @@
 import React from "react";
 import MyBannerAd from "./MyBannerAd";
+import { StyleProp, View, ViewStyle } from "react-native";
+
+type Props = {
+  containerStyle?: StyleProp<ViewStyle>;
+};
 
 export default React.memo(
-  function BannerAdsInHome() {
+  function BannerAdsInHome({ containerStyle }: Props) {
     return (
-      <>
+      <View style={containerStyle}>
         <MyBannerAd adUnitId="ca-app-pub-9675217052405779/2293939504" />
         <MyBannerAd adUnitId="ca-app-pub-9675217052405779/6465420126" />
         <MyBannerAd adUnitId="ca-app-pub-9675217052405779/9454545548" />
@@ -15,7 +20,7 @@ export default React.memo(
         <MyBannerAd adUnitId="ca-app-pub-9675217052405779/3839256786" />
         <MyBannerAd adUnitId="ca-app-pub-9675217052405779/3868064998" />
         <MyBannerAd adUnitId="ca-app-pub-9675217052405779/7586930102" />
-      </>
+      </View>
     );
   },
   () => true

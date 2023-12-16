@@ -80,7 +80,10 @@ export default function index() {
           onPress={handleDecrement}
         />
       </View>
-      <MyBannerAd adUnitId="ca-app-pub-9675217052405779/5673430244" />
+      <MyBannerAd
+        adUnitId="ca-app-pub-9675217052405779/5673430244"
+        keepLayoutOnLoadFailed
+      />
       <Snackbar
         visible={snackbarVisible}
         onDismiss={() => setSnackbarVisible(false)}
