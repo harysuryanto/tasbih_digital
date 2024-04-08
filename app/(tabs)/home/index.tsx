@@ -115,7 +115,7 @@ export default function index() {
                 }}
               />
             ))}
-            <BannerAdsInHome containerStyle={{ marginTop: 100 }} />
+            <BannerAdsInHome containerStyle={{ marginTop: 500 }} />
           </>
         </ScrollView>
       )}
