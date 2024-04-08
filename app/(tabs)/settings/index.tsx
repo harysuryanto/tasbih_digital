@@ -6,7 +6,7 @@ import { View } from "react-native";
 import MyBannerAd from "../../../src/components/MyBannerAd";
 import appJson from "../../../app.json";
 
-export default function index() {
+export default function SettingsScreen() {
   const {
     vibrationEvery33,
     vibrationEvery100,
