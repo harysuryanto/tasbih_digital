@@ -18,7 +18,7 @@ import { vibrate } from "../../../src/utils/vibrate";
 import Toast from "react-native-simple-toast";
 import BannerAdsInHome from "../../../src/components/BannerAdsInHome";
 
-export default function index() {
+export default function HomeScreen() {
   const router = useRouter();
 
   const { tasbeehs, add, edit, remove } = useTasbeehsStore();

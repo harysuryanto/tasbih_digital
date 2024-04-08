@@ -9,7 +9,7 @@ import { vibrate } from "../../src/utils/vibrate";
 import useSettingsStore from "../../src/stores/useSettingsStore";
 import MyBannerAd from "../../src/components/MyBannerAd";
 
-export default function index() {
+export default function CounterScreen() {
   const router = useRouter();
 
   const { tasbeehId } = useLocalSearchParams();
