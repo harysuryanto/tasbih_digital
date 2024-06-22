@@ -8,7 +8,6 @@
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "backgroundColor": "#000000",
-    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
     },
