@@ -56,7 +56,7 @@ export default function AppLayout() {
           title: "Pengaturan",
           tabBarIcon: ({ color, focused, size }) => (
             <Ionicons
-              name={focused ? "md-settings" : "md-settings-outline"}
+              name={focused ? "settings" : "settings-outline"}
               size={size}
               color={color}
             />
