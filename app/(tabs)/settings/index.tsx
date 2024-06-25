@@ -1,10 +1,10 @@
+import Constants from "expo-constants";
 import React from "react";
 import ScreenWrapper from "../../../src/components/ScreenWrapper";
 import { Appbar, List, Switch, Text } from "react-native-paper";
 import useSettingsStore from "../../../src/stores/useSettingsStore";
 import { View } from "react-native";
 import MyBannerAd from "../../../src/components/MyBannerAd";
-import appJson from "../../../app.json";
 
 export default function SettingsScreen() {
   const {
@@ -43,7 +43,7 @@ export default function SettingsScreen() {
         </List.Section>
       </View>
       <Text variant="bodySmall" style={{ padding: 8, textAlign: "center" }}>
-        Versi {appJson.expo.version}
+        Versi {Constants.expoConfig?.version}
       </Text>
       <MyBannerAd adUnitId="ca-app-pub-9675217052405779/3677822299" />
     </ScreenWrapper>
