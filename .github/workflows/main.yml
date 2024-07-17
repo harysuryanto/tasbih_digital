@@ -24,7 +24,12 @@ jobs:
         npm install -g eas-cli
         echo "$(npm bin -g)" >> $GITHUB_PATH
 
+    - name: Verify EAS CLI installation
+      run: eas --version
+
     - name: Build APK
+      env:
+        EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
       run: npx eas build --profile production --platform android --local --non-interactive
 
     - name: Upload APK artifact
