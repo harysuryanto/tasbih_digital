@@ -8,7 +8,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 20  # Set an overall job timeout
+    timeout-minutes: 60  # Set an overall job timeout
 
     steps:
     - name: Checkout repository
@@ -29,8 +29,13 @@ jobs:
     - name: Install dependencies
       run: |
         npm install
-        npm install -g eas-cli
+        npm install -g eas-cli sharp-cli
         echo "$(npm bin -g)" >> $GITHUB_PATH
+
+    - name: Update Expo packages
+      run: |
+        npx expo install --fix
+        npm install react-native@0.72.10
 
     - name: Verify EAS CLI installation
       run: eas --version
@@ -43,25 +48,12 @@ jobs:
     - name: Build APK
       env:
         EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+        NODE_OPTIONS: --no-warnings
       run: |
         set -e
         echo "Starting build process..."
-        BUILD_RESULT=$(eas build --profile production --platform android --local --non-interactive --json)
+        npx eas-cli build --profile production --platform android --local --non-interactive --output app-release.apk
         echo "Build process completed."
-        echo "Build result: $BUILD_RESULT"
-        BUILD_ID=$(echo $BUILD_RESULT | jq -r '.id')
-        if [ -z "$BUILD_ID" ]; then
-          echo "Failed to get build ID"
-          exit 1
-        fi
-        echo "BUILD_ID=$BUILD_ID" >> $GITHUB_ENV
-        echo "Waiting for build to complete..."
-        eas build:view $BUILD_ID --json --non-interactive --wait
-
-    - name: Download APK
-      run: |
-        echo "Downloading APK for build $BUILD_ID"
-        eas build:download --build-id $BUILD_ID --output app-release.apk
         echo "APK_PATH=app-release.apk" >> $GITHUB_ENV
 
     - name: Rename APK file
