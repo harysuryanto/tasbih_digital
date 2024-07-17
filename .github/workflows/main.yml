@@ -43,7 +43,6 @@ jobs:
     - name: Update Expo packages
       run: |
         npx expo install --fix
-        npm install react-native@0.72.10
 
     - name: Verify EAS CLI installation
       run: eas --version
