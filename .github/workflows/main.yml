@@ -1,7 +1,17 @@
-name: Build Android Production APK
+name: Build Android via EAS
 
 on:
   workflow_dispatch:
+    inputs:
+      build_profile:
+        description: 'EAS build profile'
+        required: true
+        default: 'preview'
+        type: choice
+        options:
+          - development
+          - preview
+          - production
 
 jobs:
   build:
@@ -41,16 +51,17 @@ jobs:
     - name: Generate APK filename
       run: node generate-filename.js
       env:
-        EAS_BUILD_PROFILE: production
+        EAS_BUILD_PROFILE: ${{ github.event.inputs.build_profile }}
 
     - name: Build APK
       env:
         EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
         NODE_OPTIONS: --no-warnings
+        EAS_BUILD_PROFILE: ${{ github.event.inputs.build_profile }}
       run: |
         set -e
         echo "Starting build process..."
-        npx eas-cli build --profile production --platform android --local --non-interactive --output app-release.apk
+        npx eas-cli build --profile $EAS_BUILD_PROFILE --platform android --local --non-interactive --output app-release.apk
         echo "Build process completed."
         echo "APK_PATH=app-release.apk" >> $GITHUB_ENV
 
