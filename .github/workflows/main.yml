@@ -16,7 +16,7 @@ jobs:
     - name: Set up Node.js
       uses: actions/setup-node@v2
       with:
-        node-version: '22'
+        node-version: '14'
 
     - name: Install dependencies
       run: |
@@ -27,13 +27,28 @@ jobs:
     - name: Verify EAS CLI installation
       run: eas --version
 
+    - name: Generate APK filename
+      run: node generate-filename.js
+      env:
+        EAS_BUILD_PROFILE: production
+
     - name: Build APK
       env:
         EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
-      run: npx eas build --profile preview --platform android --local --non-interactive
+      run: |
+        OUTPUT=$(npx eas build --profile production --platform android --local --non-interactive --output build-output.apk)
+        echo "$OUTPUT"
+        APK_PATH=$(echo "$OUTPUT" | grep -oP '(?<=You can find the build artifacts in )[^ ]+')
+        echo "APK_PATH=$APK_PATH" >> $GITHUB_ENV
+
+    - name: Rename APK file
+      run: |
+        FILENAME=$(cat apk-filename.txt)
+        mv "$APK_PATH" "$FILENAME"
+        echo "RENAMED_APK=$FILENAME" >> $GITHUB_ENV
 
     - name: Upload APK artifact
       uses: actions/upload-artifact@v2
       with:
         name: app-release
-        path: build-output/*.apk
+        path: ${{ env.RENAMED_APK }}
