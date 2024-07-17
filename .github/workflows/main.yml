@@ -1,4 +1,4 @@
-name: Build Android via EAS
+name: Build Android with EAS
 
 on:
   workflow_dispatch:
