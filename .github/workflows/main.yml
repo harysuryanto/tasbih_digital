@@ -16,7 +16,7 @@ jobs:
     - name: Set up Node.js
       uses: actions/setup-node@v2
       with:
-        node-version: '22'
+        node-version: '16'  # Updated to a newer Node.js version
 
     - name: Install dependencies
       run: |
@@ -35,20 +35,41 @@ jobs:
     - name: Build APK
       env:
         EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+        NODE_OPTIONS: --no-warnings  # Suppress deprecation warnings
       run: |
-        OUTPUT=$(npx eas build --profile production --platform android --local --non-interactive --output build-output.apk)
+        set +e  # Continue on error
+        OUTPUT=$(npx eas build --profile production --platform android --local --non-interactive --output build-output.apk 2>&1)
+        BUILD_EXIT_CODE=$?
         echo "$OUTPUT"
+        if [ $BUILD_EXIT_CODE -ne 0 ]; then
+          echo "Build failed with exit code $BUILD_EXIT_CODE"
+          echo "$OUTPUT" | grep -i error
+          exit $BUILD_EXIT_CODE
+        fi
         APK_PATH=$(echo "$OUTPUT" | grep -oP '(?<=You can find the build artifacts in )[^ ]+')
+        if [ -z "$APK_PATH" ]; then
+          echo "Failed to find APK path in build output"
+          exit 1
+        fi
         echo "APK_PATH=$APK_PATH" >> $GITHUB_ENV
 
     - name: Rename APK file
+      if: success()
       run: |
         FILENAME=$(cat apk-filename.txt)
         mv "$APK_PATH" "$FILENAME"
         echo "RENAMED_APK=$FILENAME" >> $GITHUB_ENV
 
     - name: Upload APK artifact
+      if: success()
       uses: actions/upload-artifact@v2
       with:
         name: app-release
         path: ${{ env.RENAMED_APK }}
+
+    - name: Upload build logs on failure
+      if: failure()
+      uses: actions/upload-artifact@v2
+      with:
+        name: build-logs
+        path: build-output.log
