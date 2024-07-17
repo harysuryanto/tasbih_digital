@@ -8,6 +8,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 20  # Set an overall job timeout
 
     steps:
     - name: Checkout repository
@@ -16,7 +17,7 @@ jobs:
     - name: Set up Node.js
       uses: actions/setup-node@v2
       with:
-        node-version: '22'  # Updated to Node.js 22
+        node-version: '22'
 
     - name: Validate eas.json
       run: |
@@ -42,23 +43,26 @@ jobs:
     - name: Build APK
       env:
         EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
-        NODE_OPTIONS: --no-warnings  # Suppress deprecation warnings
       run: |
-        set +e  # Continue on error
-        OUTPUT=$(npx eas build --profile production --platform android --local --non-interactive --output build-output.apk 2>&1)
-        BUILD_EXIT_CODE=$?
-        echo "$OUTPUT"
-        if [ $BUILD_EXIT_CODE -ne 0 ]; then
-          echo "Build failed with exit code $BUILD_EXIT_CODE"
-          echo "$OUTPUT" | grep -i error
-          exit $BUILD_EXIT_CODE
-        fi
-        APK_PATH=$(echo "$OUTPUT" | grep -oP '(?<=You can find the build artifacts in )[^ ]+')
-        if [ -z "$APK_PATH" ]; then
-          echo "Failed to find APK path in build output"
+        set -e
+        echo "Starting build process..."
+        BUILD_RESULT=$(eas build --profile production --platform android --local --non-interactive --json)
+        echo "Build process completed."
+        echo "Build result: $BUILD_RESULT"
+        BUILD_ID=$(echo $BUILD_RESULT | jq -r '.id')
+        if [ -z "$BUILD_ID" ]; then
+          echo "Failed to get build ID"
           exit 1
         fi
-        echo "APK_PATH=$APK_PATH" >> $GITHUB_ENV
+        echo "BUILD_ID=$BUILD_ID" >> $GITHUB_ENV
+        echo "Waiting for build to complete..."
+        eas build:view $BUILD_ID --json --non-interactive --wait
+
+    - name: Download APK
+      run: |
+        echo "Downloading APK for build $BUILD_ID"
+        eas build:download --build-id $BUILD_ID --output app-release.apk
+        echo "APK_PATH=app-release.apk" >> $GITHUB_ENV
 
     - name: Rename APK file
       if: success()
