@@ -1,9 +1,7 @@
-name: Build Expo APK
+name: Build Android Production APK
 
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
 
 jobs:
   build:
