@@ -16,7 +16,14 @@ jobs:
     - name: Set up Node.js
       uses: actions/setup-node@v2
       with:
-        node-version: '16'  # Updated to a newer Node.js version
+        node-version: '22'  # Updated to Node.js 22
+
+    - name: Validate eas.json
+      run: |
+        if ! jq empty eas.json; then
+          echo "eas.json is not valid JSON"
+          exit 1
+        fi
 
     - name: Install dependencies
       run: |
