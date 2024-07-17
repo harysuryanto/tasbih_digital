@@ -16,7 +16,7 @@ jobs:
     - name: Set up Node.js
       uses: actions/setup-node@v2
       with:
-        node-version: '14'
+        node-version: '22.04.4'
 
     - name: Install dependencies
       run: |
@@ -30,7 +30,7 @@ jobs:
     - name: Build APK
       env:
         EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
-      run: npx eas build --profile production --platform android --local --non-interactive
+      run: npx eas build --profile preview --platform android --local --non-interactive
 
     - name: Upload APK artifact
       uses: actions/upload-artifact@v2
