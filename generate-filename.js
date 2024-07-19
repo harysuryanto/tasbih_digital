@@ -7,7 +7,7 @@ if (fs.existsSync('app.config.js')) {
   config = require('./app.config.js');
 } else if (fs.existsSync('app.config.ts')) {
   config = require('./app.config.ts');
-else {
+} else {
   config = JSON.parse(fs.readFileSync('app.json', 'utf8'));
 }
 
