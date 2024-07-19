@@ -1,75 +1,88 @@
 name: Build Android with EAS
 
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
+    inputs:
+      build_profile:
+        description: "EAS build profile"
+        required: true
+        default: "production"
+        type: choice
+        options:
+          - development
+          - preview
+          - production
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 60  # Set an overall job timeout
+    timeout-minutes: 60
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: '22'
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: "22"
 
-    - name: Validate eas.json
-      run: |
-        if ! jq empty eas.json; then
-          echo "eas.json is not valid JSON"
-          exit 1
-        fi
-    - name: Install dependencies
-      run: |
-        npm install
-        npm install -g eas-cli sharp-cli
-        echo "$(npm bin -g)" >> $GITHUB_PATH
-    - name: Update Expo packages
-      run: |
-        npx expo install --fix
-        npm install react-native@0.72.10
-    - name: Verify EAS CLI installation
-      run: eas --version
+      - name: Validate eas.json
+        run: |
+          if ! jq empty eas.json; then
+            echo "eas.json is not valid JSON"
+            exit 1
+          fi
 
-    - name: Generate APK filename
-      run: node generate-filename.js
-      env:
-        EAS_BUILD_PROFILE: production
+      - name: Install dependencies
+        run: |
+          npm install
+          npm install -g eas-cli sharp-cli
+          echo "$(npm bin -g)" >> $GITHUB_PATH
 
-    - name: Build APK
-      env:
-        EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
-        NODE_OPTIONS: --no-warnings
-      run: |
-        set -e
-        echo "Starting build process..."
-        npx eas-cli build --profile production --platform android --local --non-interactive --output app-release.apk
-        echo "Build process completed."
-        echo "APK_PATH=app-release.apk" >> $GITHUB_ENV
-    - name: Rename APK file
-      if: success()
-      run: |
-        FILENAME=$(cat apk-filename.txt)
-        mv "$APK_PATH" "$FILENAME"
-        echo "RENAMED_APK=$FILENAME" >> $GITHUB_ENV
-    - name: Upload APK artifact
-      if: success()
-      uses: actions/upload-artifact@v3
-      with:
-        name: ${{ env.RENAMED_APK }}
-        path: ${{ env.RENAMED_APK }}
-        if-no-files-found: error
-        retention-days: 90
+      - name: Update Expo packages
+        run: |
+          npx expo install --fix
 
-    - name: Upload build logs on failure
-      if: failure()
-      uses: actions/upload-artifact@v3
-      with:
-        name: build-logs
-        path: build-output.log
+      - name: Verify EAS CLI installation
+        run: eas --version
+
+      - name: Generate APK filename
+        run: node generate-filename.js
+        env:
+          EAS_BUILD_PROFILE: ${{ github.event.inputs.build_profile }}
+
+      - name: Build APK
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+          NODE_OPTIONS: --no-warnings
+          EAS_BUILD_PROFILE: ${{ github.event.inputs.build_profile }}
+        run: |
+          set -e
+          echo "Starting build process..."
+          npx eas-cli build --profile $EAS_BUILD_PROFILE --platform android --local --non-interactive --output app-release.apk
+          echo "Build process completed."
+          echo "APK_PATH=app-release.apk" >> $GITHUB_ENV
+
+      - name: Rename APK file
+        if: success()
+        run: |
+          FILENAME=$(cat apk-filename.txt)
+          mv "$APK_PATH" "$FILENAME"
+          echo "RENAMED_APK=$FILENAME" >> $GITHUB_ENV
+
+      - name: Upload APK artifact
+        if: success()
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ env.RENAMED_APK }}
+          path: ${{ env.RENAMED_APK }}
+          if-no-files-found: error
+          retention-days: 90
+
+      - name: Upload build logs on failure
+        if: failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-logs
+          path: build-output.log
