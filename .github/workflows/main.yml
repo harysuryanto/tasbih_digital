@@ -40,9 +40,9 @@ jobs:
         npm install -g eas-cli sharp-cli
         echo "$(npm bin -g)" >> $GITHUB_PATH
 
-    - name: Update Expo packages
-      run: |
-        npx expo install --fix
+    # - name: Update Expo packages
+    #   run: |
+    #     npx expo install --fix
 
     - name: Verify EAS CLI installation
       run: eas --version
