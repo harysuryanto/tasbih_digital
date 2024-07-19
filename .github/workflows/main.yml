@@ -40,17 +40,17 @@ jobs:
           npm install -g eas-cli sharp-cli
           echo "$(npm bin -g)" >> $GITHUB_PATH
 
-      # - name: Update Expo packages
-      #   run: |
-      #     npx expo install --fix
+      - name: Update Expo packages
+        run: |
+          npx expo install --fix
 
-      # - name: Verify EAS CLI installation
-      #   run: eas --version
+      - name: Verify EAS CLI installation
+        run: eas --version
 
-      # - name: Generate APK filename
-      #   run: node generate-filename.js
-      #   env:
-      #     EAS_BUILD_PROFILE: ${{ github.event.inputs.build_profile }}
+      - name: Generate APK filename
+        run: node generate-filename.js
+        env:
+          EAS_BUILD_PROFILE: ${{ github.event.inputs.build_profile }}
 
       - name: Build APK
         env:
@@ -59,7 +59,7 @@ jobs:
           EAS_BUILD_PROFILE: ${{ github.event.inputs.build_profile }}
         run: |
           set -e
-          echo "Starting build process..."
+          echo "Starting build process with npx eas build --profile $EAS_BUILD_PROFILE --platform android --local --non-interactive --output app-release.apk"
           npx eas build --profile $EAS_BUILD_PROFILE --platform android --local --non-interactive --output app-release.apk
           echo "Build process completed."
           echo "APK_PATH=app-release.apk" >> $GITHUB_ENV
@@ -67,10 +67,9 @@ jobs:
       - name: Rename APK file
         if: success()
         run: |
-          echo "RENAMED_APK=tasbih-digital.apk" >> $GITHUB_ENV
-      #     FILENAME=$(cat apk-filename.txt)
-      #     mv "$APK_PATH" "$FILENAME"
-      #     echo "RENAMED_APK=$FILENAME" >> $GITHUB_ENV
+          FILENAME=$(cat apk-filename.txt)
+          mv "$APK_PATH" "$FILENAME"
+          echo "RENAMED_APK=$FILENAME" >> $GITHUB_ENV
 
       - name: Upload APK artifact
         if: success()
