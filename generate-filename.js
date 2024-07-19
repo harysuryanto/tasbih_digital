@@ -5,7 +5,9 @@ const path = require('path');
 let config;
 if (fs.existsSync('app.config.js')) {
   config = require('./app.config.js');
-} else {
+} else if (fs.existsSync('app.config.ts')) {
+  config = require('./app.config.ts');
+else {
   config = JSON.parse(fs.readFileSync('app.json', 'utf8'));
 }
 
