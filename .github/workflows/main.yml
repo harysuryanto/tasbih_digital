@@ -46,13 +46,6 @@ jobs:
           echo 'Run echo "$(npm bin -g)" >> $GITHUB_PATH'
           echo "$(npm bin -g)" >> $GITHUB_PATH
 
-      - name: Transpile TypeScript config
-        run: |
-          if [ -f app.config.ts ]; then
-            tsc app.config.ts --module commonjs --outDir .
-            mv app.config.js transpiled-app.config.js
-          fi
-
       - name: Update Expo packages
         run: |
           npx expo install --fix
@@ -60,36 +53,25 @@ jobs:
       - name: Verify EAS CLI installation
         run: eas --version
 
-      - name: Generate APK filename
-        run: node generate-filename.js
-        env:
-          EAS_BUILD_PROFILE: ${{ github.event.inputs.build_profile }}
-
       - name: Build APK
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
           NODE_OPTIONS: --no-warnings
           EAS_BUILD_PROFILE: ${{ github.event.inputs.build_profile }}
+          FILENAME: "tasbih-digital-${{ github.event.inputs.build_profile }}.apk"
         run: |
           set -e
-          echo "Starting build process with npx eas build --profile $EAS_BUILD_PROFILE --platform android --local --non-interactive --output app-release.apk"
-          npx eas build --profile $EAS_BUILD_PROFILE --platform android --local --non-interactive --output app-release.apk
+          echo "Starting build process with npx eas build --profile $EAS_BUILD_PROFILE --platform android --local --non-interactive --output $FILENAME"
+          npx eas build --profile $EAS_BUILD_PROFILE --platform android --local --non-interactive --output $FILENAME
           echo "Build process completed."
-          echo "APK_PATH=app-release.apk" >> $GITHUB_ENV
-
-      - name: Rename APK file
-        if: success()
-        run: |
-          FILENAME=$(cat apk-filename.txt)
-          mv "$APK_PATH" "$FILENAME"
-          echo "RENAMED_APK=$FILENAME" >> $GITHUB_ENV
+          echo "APK_PATH=$FILENAME" >> $GITHUB_ENV
 
       - name: Upload APK artifact
         if: success()
         uses: actions/upload-artifact@v3
         with:
-          name: ${{ env.RENAMED_APK }}
-          path: ${{ env.RENAMED_APK }}
+          name: ${{ env.APK_PATH }}
+          path: ${{ env.APK_PATH }}
           if-no-files-found: error
           retention-days: 90
 
