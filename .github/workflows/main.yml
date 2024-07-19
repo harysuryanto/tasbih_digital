@@ -53,12 +53,24 @@ jobs:
       - name: Verify EAS CLI installation
         run: eas --version
 
+      - name: Get name from package.json
+        id: get_name
+        run: |
+          VERSION=$(jq -r '.name' package.json)
+          echo "NAME=$NAME" >> $GITHUB_ENV
+
+      - name: Get version from package.json
+        id: get_version
+        run: |
+          VERSION=$(jq -r '.version' package.json)
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+
       - name: Build APK
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
           NODE_OPTIONS: --no-warnings
           EAS_BUILD_PROFILE: ${{ github.event.inputs.build_profile }}
-          FILENAME: "tasbih-digital-${{ github.event.inputs.build_profile }}.apk"
+          FILENAME: "${{ env.NAME }}-v${{ env.VERSION }}-${{ github.event.inputs.build_profile }}.apk"
         run: |
           set -e
           echo "Starting build process with npx eas build --profile $EAS_BUILD_PROFILE --platform android --local --non-interactive --output $FILENAME"
