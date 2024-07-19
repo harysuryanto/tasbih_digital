@@ -41,10 +41,17 @@ jobs:
         run: |
           echo "Run npm install"
           npm install
-          echo "Run npm install -g eas-cli sharp-cli"
-          npm install -g eas-cli sharp-cli
+          echo "Run npm install -g eas-cli sharp-cli typescript"
+          npm install -g eas-cli sharp-cli typescript
           echo 'Run echo "$(npm bin -g)" >> $GITHUB_PATH'
           echo "$(npm bin -g)" >> $GITHUB_PATH
+
+      - name: Transpile TypeScript config
+        run: |
+          if [ -f app.config.ts ]; then
+            tsc app.config.ts --module commonjs --outDir .
+            mv app.config.js transpiled-app.config.js
+          fi
 
       - name: Update Expo packages
         run: |
