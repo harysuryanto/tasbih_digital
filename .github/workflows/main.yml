@@ -36,8 +36,11 @@ jobs:
 
       - name: Install dependencies
         run: |
+          echo "Run npm install"
           npm install
+          echo "Run npm install -g eas-cli sharp-cli"
           npm install -g eas-cli sharp-cli
+          echo 'Run echo "$(npm bin -g)" >> $GITHUB_PATH'
           echo "$(npm bin -g)" >> $GITHUB_PATH
 
       - name: Update Expo packages
