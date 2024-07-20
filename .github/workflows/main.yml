@@ -56,17 +56,6 @@ jobs:
       - name: Verify EAS CLI installation
         run: eas --version
 
-      # - name: Get name from package.json
-      #   id: get_name
-      #   run: |
-      #     NAME=$(jq -r '.name' package.json)
-      #     echo "NAME=$NAME" >> $GITHUB_ENV
-
-      # - name: Get version from package.json
-      #   id: get_version
-      #   run: |
-      #     VERSION=$(jq -r '.version' package.json)
-      #     echo "VERSION=$VERSION" >> $GITHUB_ENV
       - name: Build APK
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
