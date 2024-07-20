@@ -30,8 +30,8 @@ jobs:
       - name: Set up Java 17
         uses: actions/setup-java@v3
         with:
-          distribution: 'temurin'
-          java-version: '17'
+          distribution: "temurin"
+          java-version: "17"
 
       - name: Install jq
         run: sudo apt-get install -y jq
@@ -45,11 +45,8 @@ jobs:
 
       - name: Install dependencies
         run: |
-          echo "Run npm install"
           npm install
-          echo "Run npm install -g eas-cli sharp-cli typescript"
-          npm install -g eas-cli sharp-cli typescript
-          echo 'Run echo "$(npm bin -g)" >> $GITHUB_PATH'
+          npm install -g eas-cli sharp-cli
           echo "$(npm bin -g)" >> $GITHUB_PATH
 
       - name: Update Expo packages
@@ -59,31 +56,31 @@ jobs:
       - name: Verify EAS CLI installation
         run: eas --version
 
-      - name: Get name from package.json
-        id: get_name
-        run: |
-          NAME=$(jq -r '.name' package.json)
-          echo "NAME=$NAME" >> $GITHUB_ENV
+      # - name: Get name from package.json
+      #   id: get_name
+      #   run: |
+      #     NAME=$(jq -r '.name' package.json)
+      #     echo "NAME=$NAME" >> $GITHUB_ENV
 
-      - name: Get version from package.json
-        id: get_version
-        run: |
-          VERSION=$(jq -r '.version' package.json)
-          echo "VERSION=$VERSION" >> $GITHUB_ENV
+      # - name: Get version from package.json
+      #   id: get_version
+      #   run: |
+      #     VERSION=$(jq -r '.version' package.json)
+      #     echo "VERSION=$VERSION" >> $GITHUB_ENV
 
       - name: Build APK
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
           NODE_OPTIONS: --no-warnings
           EAS_BUILD_PROFILE: ${{ github.event.inputs.build_profile }}
-          NAME: ${{ env.NAME }}
-          VERSION: ${{ env.VERSION }}
-          FILENAME: "${{ env.NAME }}-v${{ env.VERSION }}-${{ github.event.inputs.build_profile }}.apk"
+          NAME: $(jq -r '.name' package.json)
+          VERSION: $(jq -r '.version' package.json)
+          FILENAME: "${{ NAME }}-v${{ VERSION }}-${{ EAS_BUILD_PROFILE }}.apk"
         run: |
           set -e
-          echo "Starting build process with npx eas build --profile $EAS_BUILD_PROFILE --platform android --local --non-interactive --output $FILENAME"
+          echo "🚀 Starting build process..."
           npx eas build --profile $EAS_BUILD_PROFILE --platform android --local --non-interactive --output $FILENAME
-          echo "Build process completed."
+          echo "✅ Build process completed."
           echo "APK_PATH=$FILENAME" >> $GITHUB_ENV
 
       - name: Upload APK artifact
