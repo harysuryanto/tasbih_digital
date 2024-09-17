@@ -52,9 +52,9 @@ module.exports = (_: ConfigContext): Partial<ExpoConfig> => {
       eas: {
         projectId: "5f76de24-53f5-457f-93cf-9c374e0af0fd",
       },
-      "react-native-google-mobile-ads": {
-        android_app_id: "ca-app-pub-9675217052405779~3502939772",
-      },
+      // "react-native-google-mobile-ads": {
+      //   android_app_id: "ca-app-pub-9675217052405779~3502939772",
+      // },
     },
     runtimeVersion: {
       policy: "appVersion",
