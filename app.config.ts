@@ -30,6 +30,8 @@ module.exports = (_: ConfigContext): Partial<ExpoConfig> => {
       package: IS_DEV
         ? "com.harysuryanto.tasbihdigital.dev"
         : "com.harysuryanto.tasbihdigital",
+      // TODO: Make this automaticly incremented
+      versionCode: 2,
     },
     web: {
       bundler: "metro",
