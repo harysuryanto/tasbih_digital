@@ -13,8 +13,8 @@ on:
           - production
 
 env:
-  NODE_VERSION: '18'
-  JAVA_VERSION: '17'
+  NODE_VERSION: "18"
+  JAVA_VERSION: "17"
 
 jobs:
   build:
@@ -63,7 +63,7 @@ jobs:
           echo "$(npm bin -g)" >> $GITHUB_PATH
 
       - name: Update Expo packages
-        run: npx expo install --check
+        run: npx expo install --fix
 
       - name: Verify EAS CLI installation
         run: eas --version
@@ -76,20 +76,20 @@ jobs:
         run: |
           set -e
           echo "🚀 Starting build process..."
-          
+
           # Extract values from package.json
           NAME=$(jq -r '.name' package.json)
           VERSION=$(jq -r '.version' package.json)
           FILENAME="${NAME}-v${VERSION}-${EAS_BUILD_PROFILE}.apk"
-          
+
           # Log extracted values
           echo "NAME=${NAME}"
           echo "VERSION=${VERSION}"
           echo "FILENAME=${FILENAME}"
-          
+
           # Build APK
           npx eas build --profile $EAS_BUILD_PROFILE --platform android --local --non-interactive --output $FILENAME
-          
+
           echo "✅ Build process completed."
           echo "APK_PATH=$FILENAME" >> $GITHUB_ENV
 
