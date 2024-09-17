@@ -21,6 +21,10 @@
         "buildType": "apk"
       },
       "channel": "production"
+    },
+    "productionAppBundle": {
+      "distribution": "store",
+      "channel": "production"
     }
   },
   "submit": {
