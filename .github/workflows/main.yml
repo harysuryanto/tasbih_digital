@@ -11,7 +11,7 @@ on:
           - development
           - preview
           - production
-          - productionAppBundle
+          - productionAab
 
 env:
   NODE_VERSION: "18"

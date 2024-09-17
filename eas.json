@@ -22,7 +22,7 @@
       },
       "channel": "production"
     },
-    "productionAppBundle": {
+    "productionAab": {
       "distribution": "store",
       "channel": "production"
     }
