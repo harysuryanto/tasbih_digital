@@ -43,6 +43,8 @@ module.exports = (_: ConfigContext): Partial<ExpoConfig> => {
         "expo-build-properties",
         {
           android: {
+            // TODO: Try to remove these sdk versions and publish again and see if there are changes in Play Console,
+            // because they are already set to 34 by default when I see the code in build.gradle.
             compileSdkVersion: 34,
             targetSdkVersion: 34,
           },
