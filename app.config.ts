@@ -30,7 +30,8 @@ module.exports = (_: ConfigContext): Partial<ExpoConfig> => {
       package: IS_DEV
         ? "com.harysuryanto.tasbihdigital.dev"
         : "com.harysuryanto.tasbihdigital",
-      versionCode: 5,
+      versionCode: 6,
+      permissions: ["com.google.android.gms.permission.AD_ID"],
     },
     web: {
       bundler: "metro",
