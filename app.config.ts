@@ -30,8 +30,7 @@ module.exports = (_: ConfigContext): Partial<ExpoConfig> => {
       package: IS_DEV
         ? "com.harysuryanto.tasbihdigital.dev"
         : "com.harysuryanto.tasbihdigital",
-      // TODO: Make this automaticly incremented
-      versionCode: 3,
+      versionCode: 4,
     },
     web: {
       bundler: "metro",
@@ -40,7 +39,16 @@ module.exports = (_: ConfigContext): Partial<ExpoConfig> => {
     },
     plugins: [
       "expo-router",
-      ["expo-build-properties", { ios: { useFrameworks: "static" } }],
+      [
+        "expo-build-properties",
+        {
+          android: {
+            compileSdkVersion: 34,
+            targetSdkVersion: 34,
+          },
+          ios: { useFrameworks: "static" },
+        },
+      ],
     ],
     experiments: {
       typedRoutes: true,
