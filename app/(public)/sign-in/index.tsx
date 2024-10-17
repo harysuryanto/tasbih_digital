@@ -5,36 +5,37 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
-import React, { useEffect, useState } from "react";
-import { ID, Models } from "react-native-appwrite";
+import React, { useState } from "react";
+import { ID } from "react-native-appwrite";
 import { account } from "../../../src/constants/Appwrite";
+import { useAuth } from "../../../src/contexts/AuthContext";
 
 export default function SignInScreen() {
-  const [loggedInUser, setLoggedInUser] =
-    useState<Models.User<Models.Preferences> | null>(null);
+  const { authState, signIn, signOut } = useAuth();
+
+  // const [loggedInUser, setLoggedInUser] =
+  //   useState<Models.User<Models.Preferences> | null>(null);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
 
   async function login(email: string, password: string) {
-    await account.createEmailPasswordSession(email, password);
-    setLoggedInUser(await account.get());
+    await signIn(email, password);
+    // await account.createEmailPasswordSession(email, password);
+    // setLoggedInUser(await account.get());
   }
 
   async function register(email: string, password: string, name: string) {
     await account.create(ID.unique(), email, password, name);
-    await login(email, password);
-    setLoggedInUser(await account.get());
+    await signIn(email, password);
+    // await login(email, password);
+    // setLoggedInUser(await account.get());
   }
-
-  useEffect(() => {
-    account.get().then(setLoggedInUser);
-  }, []);
 
   return (
     <View style={styles.root}>
       <Text>
-        {loggedInUser ? `Logged in as ${loggedInUser.name}` : "Not logged in"}
+        {authState ? `Logged in as ${authState.name}` : "Not logged in"}
       </Text>
       <View>
         <TextInput
@@ -74,8 +75,8 @@ export default function SignInScreen() {
         <TouchableOpacity
           style={styles.button}
           onPress={async () => {
-            await account.deleteSession("current");
-            setLoggedInUser(null);
+            signOut();
+            // await account.deleteSession("current");
           }}
         >
           <Text>Logout</Text>
