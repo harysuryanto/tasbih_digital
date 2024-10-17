@@ -5,6 +5,7 @@ import { Appbar, List, Switch, Text } from "react-native-paper";
 import useSettingsStore from "../../../src/stores/useSettingsStore";
 import { View } from "react-native";
 import MyBannerAd from "../../../src/components/MyBannerAd";
+import { useAuth } from "../../../src/contexts/AuthContext";
 
 export default function SettingsScreen() {
   const {
@@ -13,6 +14,7 @@ export default function SettingsScreen() {
     setVibrationEvery33,
     setVibrationEvery100,
   } = useSettingsStore();
+  const { signOut } = useAuth();
 
   return (
     <ScreenWrapper withScrollView={false}>
@@ -40,6 +42,10 @@ export default function SettingsScreen() {
               />
             )}
           />
+        </List.Section>
+        <List.Section>
+          <List.Subheader>Akun</List.Subheader>
+          <List.Item title="Keluar" onPress={signOut} />
         </List.Section>
       </View>
       <Text variant="bodySmall" style={{ padding: 8, textAlign: "center" }}>
