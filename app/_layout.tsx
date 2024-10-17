@@ -43,6 +43,7 @@ function RootLayoutNav() {
   return (
     <PaperProvider>
       <Stack screenOptions={{ headerShown: false, animation: "ios" }}>
+        <Stack.Screen name="(public)" />
         <Stack.Screen name="(tabs)" />
         <Stack.Screen
           name="counter/[tasbeehId]"
