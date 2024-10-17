@@ -30,8 +30,8 @@ module.exports = (_: ConfigContext): Partial<ExpoConfig> => {
       package: IS_DEV
         ? "com.harysuryanto.tasbihdigital.dev"
         : "com.harysuryanto.tasbihdigital",
-      // TODO: Make this automaticly incremented
-      versionCode: 3,
+      versionCode: 6,
+      permissions: ["com.google.android.gms.permission.AD_ID"],
     },
     web: {
       bundler: "metro",
@@ -40,7 +40,19 @@ module.exports = (_: ConfigContext): Partial<ExpoConfig> => {
     },
     plugins: [
       "expo-router",
-      ["expo-build-properties", { ios: { useFrameworks: "static" } }],
+      [
+        "expo-build-properties",
+        {
+          android: {
+            // TODO: Try to remove these sdk versions and publish again and see if there are changes in Play Console,
+            // because they are already set to 34 by default when I see the code in build.gradle.
+            compileSdkVersion: 34,
+            minSdkVersion: 34,
+            targetSdkVersion: 34,
+          },
+          ios: { useFrameworks: "static" },
+        },
+      ],
     ],
     experiments: {
       typedRoutes: true,
