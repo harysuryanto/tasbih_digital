@@ -5,7 +5,7 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ID, Models } from "react-native-appwrite";
 import { account } from "../../../src/constants/Appwrite";
 
@@ -26,6 +26,10 @@ export default function SignInScreen() {
     await login(email, password);
     setLoggedInUser(await account.get());
   }
+
+  useEffect(() => {
+    account.get().then(setLoggedInUser);
+  }, []);
 
   return (
     <View style={styles.root}>
