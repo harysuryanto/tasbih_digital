@@ -6,7 +6,7 @@ import {
   useState,
 } from "react";
 import { Models } from "react-native-appwrite";
-import { account } from "../constants/Appwrite";
+import { account } from "../services/appwriteService";
 
 export type AuthState = Models.User<Models.Preferences>;
 

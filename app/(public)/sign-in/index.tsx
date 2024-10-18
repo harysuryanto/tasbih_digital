@@ -7,7 +7,7 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 import { ID } from "react-native-appwrite";
-import { account } from "../../../src/constants/Appwrite";
+import { account } from "../../../src/services/appwriteService";
 import { useAuth } from "../../../src/contexts/AuthContext";
 
 export default function SignInScreen() {
