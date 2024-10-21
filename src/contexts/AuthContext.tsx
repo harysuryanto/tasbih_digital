@@ -5,7 +5,7 @@ import {
   useEffect,
   useState,
 } from "react";
-import { Models } from "react-native-appwrite";
+import { ID, Models, OAuthProvider } from "react-native-appwrite";
 import { account } from "../services/appwriteService";
 
 export type AuthState = Models.User<Models.Preferences>;
@@ -42,8 +42,10 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
     loadAuthState();
   }, []);
 
-  // TODO: Add signUp function
-  const signUp = async (email: string, password: string, name: string) => {};
+  const signUp = async (email: string, password: string, name: string) => {
+    await account.create(ID.unique(), email, password, name);
+    await signIn(email, password);
+  };
 
   const signIn = async (email: string, password: string) => {
     await account.createEmailPasswordSession(email, password);
