@@ -18,6 +18,7 @@ function withAppwriteAuth(config) {
         },
         "intent-filter": [
           {
+            $: { "android:label": "android_web_auth" },
             action: [{ $: { "android:name": "android.intent.action.VIEW" } }],
             category: [
               { $: { "android:name": "android.intent.category.DEFAULT" } },
