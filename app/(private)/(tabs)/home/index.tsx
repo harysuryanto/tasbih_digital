@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { ScrollView, StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
-import useTasbeehsStore from "../../../src/stores/useTasbeehsStore";
+import useTasbeehsStore from "@/src/stores/useTasbeehsStore";
 import moment from "moment";
 import {
   Appbar,
@@ -13,10 +13,10 @@ import {
   Text,
   TextInput,
 } from "react-native-paper";
-import ScreenWrapper from "../../../src/components/ScreenWrapper";
-import { vibrate } from "../../../src/utils/vibrate";
+import ScreenWrapper from "@/src/components/ScreenWrapper";
+import { vibrate } from "@/src/utils/vibrate";
 import Toast from "react-native-simple-toast";
-import BannerAdsInHome from "../../../src/components/BannerAdsInHome";
+import BannerAdsInHome from "@/src/components/BannerAdsInHome";
 
 export default function HomeScreen() {
   const router = useRouter();

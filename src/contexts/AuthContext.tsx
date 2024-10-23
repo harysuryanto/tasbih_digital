@@ -6,8 +6,8 @@ import {
   useState,
 } from "react";
 import { ID, Models, OAuthProvider } from "react-native-appwrite";
-import { account } from "../services/appwriteService";
-import catchError from "../utils/catchError";
+import { account } from "@/src/services/appwriteService";
+import catchError from "@/src/utils/catchError";
 import * as WebBrowser from "expo-web-browser";
 import * as Linking from "expo-linking";
 

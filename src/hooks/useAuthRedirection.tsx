@@ -1,5 +1,5 @@
 import { useRouter, useSegments } from "expo-router";
-import { useAuth } from "../contexts/AuthContext";
+import { useAuth } from "@/src/contexts/AuthContext";
 import { useEffect } from "react";
 
 export default function useAuthRedirection() {
@@ -10,8 +10,7 @@ export default function useAuthRedirection() {
 
   useEffect(() => {
     const isInSplashScreen = segments[0] === "splash-screen";
-    const isInPrivateArea =
-      segments[0] === "(tabs)" || segments[0] === "counter";
+    const isInPrivateArea = segments[0] === "(private)";
     const isSignedIn = !!authState;
 
     if (isLoadingAuth) {

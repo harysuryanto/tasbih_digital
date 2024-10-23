@@ -1,7 +1,7 @@
 import { View, StyleSheet } from "react-native";
 import { Button, TextInput } from "react-native-paper";
 import React, { useState } from "react";
-import { useAuth } from "../../../src/contexts/AuthContext";
+import { useAuth } from "@/src/contexts/AuthContext";
 
 export default function SignInScreen() {
   const { signIn, signInWithGoogle, signUp, signOut } = useAuth();

@@ -1,11 +1,11 @@
 import Constants from "expo-constants";
 import React from "react";
-import ScreenWrapper from "../../../src/components/ScreenWrapper";
+import ScreenWrapper from "@/src/components/ScreenWrapper";
 import { Appbar, List, Switch, Text } from "react-native-paper";
-import useSettingsStore from "../../../src/stores/useSettingsStore";
+import useSettingsStore from "@/src/stores/useSettingsStore";
 import { View } from "react-native";
-import MyBannerAd from "../../../src/components/MyBannerAd";
-import { useAuth } from "../../../src/contexts/AuthContext";
+import MyBannerAd from "@/src/components/MyBannerAd";
+import { useAuth } from "@/src/contexts/AuthContext";
 
 export default function SettingsScreen() {
   const {

@@ -1,6 +1,6 @@
 import React, { PropsWithChildren } from "react";
 import { PaperProvider } from "react-native-paper";
-import { AuthProvider } from "../contexts/AuthContext";
+import { AuthProvider } from "@/src/contexts/AuthContext";
 
 export default function Providers({ children }: PropsWithChildren) {
   return (
