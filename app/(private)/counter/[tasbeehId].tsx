@@ -12,10 +12,10 @@ import MyBannerAd from "@/src/components/MyBannerAd";
 export default function CounterScreen() {
   const router = useRouter();
 
-  const { tasbeehId } = useLocalSearchParams();
+  const { tasbeehId } = useLocalSearchParams<{ tasbeehId: string }>();
   const { tasbeehs, setCount, increment, decrement, reset } =
     useTasbeehsStore();
-  const tasbeeh = tasbeehs.find((value) => value.id === tasbeehId)!;
+  const tasbeeh = tasbeehs.find((value) => value.$id === tasbeehId)!;
   const { vibrationEvery33, vibrationEvery100 } = useSettingsStore();
   const [countBeforeResetted, setCountBeforeResetted] = useState<
     number | undefined
@@ -24,7 +24,7 @@ export default function CounterScreen() {
   const [snackbarVisible, setSnackbarVisible] = useState(false);
 
   const handleReset = () => {
-    reset(tasbeeh.id);
+    reset(tasbeeh.$id);
     setSnackbarVisible(true);
   };
 
@@ -38,12 +38,12 @@ export default function CounterScreen() {
       vibrate("light");
     }
 
-    increment(tasbeeh.id);
+    increment(tasbeeh.$id);
   }, [tasbeeh.count]);
 
   const handleDecrement = () => {
     vibrate("light");
-    decrement(tasbeeh.id);
+    decrement(tasbeeh.$id);
   };
 
   useEffect(() => {
@@ -89,7 +89,7 @@ export default function CounterScreen() {
         onDismiss={() => setSnackbarVisible(false)}
         action={{
           label: "Urungkan",
-          onPress: () => setCount(tasbeeh.id, countBeforeResetted!),
+          onPress: () => setCount(tasbeeh.$id, countBeforeResetted!),
         }}
       >
         Penghitung dikembalikan ke 0

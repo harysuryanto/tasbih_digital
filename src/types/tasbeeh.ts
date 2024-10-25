@@ -1,7 +1,10 @@
-type Tasbeeh = {
+export type Tasbeeh = {
   id: string;
   name: string;
   count: number;
-  usedAt: number;
-  updatedAt: number;
+  // TODO: Add more properties
+  // createdAt: number;
+  // deletedAt?: number;
+  updatedAt?: number;
+  usedAt?: number;
 };
