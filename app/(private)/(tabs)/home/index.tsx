@@ -161,7 +161,7 @@ export default function HomeScreen() {
         onDismiss={() => setRemovedTasbeeh(undefined)}
         // action={{ label: "Urungkan", onPress: handleUndoRemoveTasbeeh }}
       >
-        {`${removedTasbeeh?.tasbeeh.name} dihapus`}
+        {`${removedTasbeeh?.name} dihapus`}
       </Snackbar>
     </ScreenWrapper>
   );
