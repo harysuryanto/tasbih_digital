@@ -4,7 +4,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   account,
   addTasbeeh,
-  deleteTasbeeh,
   getTasbeehs,
   TasbeehDoc,
   type TasbeehsCollectionAttributes,
@@ -24,7 +23,7 @@ type Store = {
       count: number;
     }
   ) => Promise<void>;
-  remove: (id: string, name: string) => Promise<TasbeehDoc>;
+  remove: (id: string) => Promise<TasbeehDoc>;
   setCount: (id: string, count: number) => Promise<void>;
   increment: (id: string) => Promise<void>;
   decrement: (id: string) => Promise<void>;
@@ -129,9 +128,7 @@ const useTasbeehsStore = create<Store>()(
         //   }),
         // }));
       },
-      remove: async (id, name): ReturnType<Store["remove"]> => {
-        console.log(id, name);
-
+      remove: async (id): ReturnType<Store["remove"]> => {
         const indexToRemove = get().tasbeehs.findIndex(({ $id }) => $id === id);
         let deletedData: TasbeehDoc;
         const newTasbeehs = [...get().tasbeehs];
@@ -143,7 +140,9 @@ const useTasbeehsStore = create<Store>()(
 
         set(() => ({ tasbeehs: newTasbeehs }));
 
-        const [errorDeleting] = await catchError(deleteTasbeeh(id));
+        const [errorDeleting] = await catchError(
+          updateTasbeeh(id, { deletedAt: getCurrentDateTime() })
+        );
         if (errorDeleting) {
           console.log("Error in remove:", errorDeleting);
           throw errorDeleting;

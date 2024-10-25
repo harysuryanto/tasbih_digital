@@ -83,9 +83,7 @@ export default function HomeScreen() {
 
   const handleRemoveTasbeeh = async () => {
     vibrate("light");
-    setRemovedTasbeeh(
-      await remove(selectedTasbeeh!.$id, selectedTasbeeh!.name)
-    );
+    setRemovedTasbeeh(await remove(selectedTasbeeh!.$id));
     setModalVisible(false);
   };
 
