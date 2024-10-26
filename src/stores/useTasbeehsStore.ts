@@ -38,7 +38,7 @@ const getCurrentDateTime = (): number => {
 };
 
 const getQueries = async () => [
-  Query.equal("userId", (await account.getSession("current")).$id),
+  Query.equal("userId", (await account.get()).$id),
   Query.isNull("deletedAt"),
 ];
 
@@ -59,7 +59,7 @@ const useTasbeehsStore = create<Store>()(
         return data.documents;
       },
       add: async (value) => {
-        const userId = (await account.getSession("current")).$id;
+        const userId = (await account.get()).$id;
         const newTasbeeh =
           typeof value === "string"
             ? ({
