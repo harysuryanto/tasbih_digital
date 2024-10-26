@@ -34,7 +34,7 @@ module.exports = (_: ConfigContext): Partial<ExpoConfig> => {
         backgroundColor: "#ffffff",
       },
       package: "com.harysuryanto.tasbihdigital",
-      versionCode: 6,
+      versionCode: 7,
       permissions: ["com.google.android.gms.permission.AD_ID"],
     },
     web: {
