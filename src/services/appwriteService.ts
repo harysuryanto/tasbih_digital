@@ -10,7 +10,6 @@ export const databases = new Databases(client);
 export const DATABASE_ID = "67191c4d0038e3b3d71b";
 export const TASBEEHS_COLLECTION_ID = "67191c63001dfe73156a";
 
-// Original attributes
 export type TasbeehsCollectionAttributes = {
   userId: string;
   name: string;
@@ -20,22 +19,9 @@ export type TasbeehsCollectionAttributes = {
   updatedAt?: number;
   deletedAt?: number;
 };
-export type TasbeehDoc = {
-  $id: string;
-  $collectionId: string;
-  $databaseId: string;
-  $createdAt: string;
-  $updatedAt: string;
-  $permissions: string[];
-  // Below is complete copy of TasbeehsCollectionAttributes.
-  userId: string;
-  name: string;
-  count: number;
-  usedAt?: number;
-  createdAt: number;
-  updatedAt?: number;
-  deletedAt?: number;
-} & Omit<Models.Document, keyof any>;
+export type TasbeehDoc = ExcludeIndex<
+  Models.Document & TasbeehsCollectionAttributes
+>;
 
 export const getTasbeehs = async (
   queries?: string[]
