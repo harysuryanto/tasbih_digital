@@ -1,4 +1,14 @@
-import { Account, Client, Databases, ID, Models } from "react-native-appwrite";
+import {
+  Account,
+  Client,
+  Databases,
+  ID,
+  type Models,
+} from "react-native-appwrite";
+import type {
+  TasbeehDoc,
+  TasbeehsCollectionAttributes,
+} from "@/src/types/tasbeeh";
 
 export const client = new Client()
   .setProject("6710b5a600394e11084c")
@@ -9,19 +19,6 @@ export const databases = new Databases(client);
 
 export const DATABASE_ID = "67191c4d0038e3b3d71b";
 export const TASBEEHS_COLLECTION_ID = "67191c63001dfe73156a";
-
-export type TasbeehsCollectionAttributes = {
-  userId: string;
-  name: string;
-  count: number;
-  usedAt?: number;
-  createdAt: number;
-  updatedAt?: number;
-  deletedAt?: number;
-};
-export type TasbeehDoc = ExcludeIndex<
-  Models.Document & TasbeehsCollectionAttributes
->;
 
 export const getTasbeehs = async (
   queries?: string[]

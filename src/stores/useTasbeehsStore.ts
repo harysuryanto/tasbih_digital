@@ -5,12 +5,14 @@ import {
   account,
   addTasbeeh,
   getTasbeehs,
-  TasbeehDoc,
-  type TasbeehsCollectionAttributes,
   updateTasbeeh,
 } from "@/src/services/appwriteService";
 import catchError from "@/src/utils/catchError";
 import { Query } from "react-native-appwrite";
+import type {
+  TasbeehDoc,
+  TasbeehsCollectionAttributes,
+} from "@/src/types/tasbeeh";
 
 type Store = {
   tasbeehs: TasbeehDoc[];

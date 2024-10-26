@@ -17,7 +17,7 @@ import ScreenWrapper from "@/src/components/ScreenWrapper";
 import { vibrate } from "@/src/utils/vibrate";
 import Toast from "react-native-simple-toast";
 import BannerAdsInHome from "@/src/components/BannerAdsInHome";
-import { TasbeehDoc } from "@/src/services/appwriteService";
+import { TasbeehDoc } from "@/src/types/tasbeeh";
 
 export default function HomeScreen() {
   const router = useRouter();
