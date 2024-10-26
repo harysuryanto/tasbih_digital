@@ -1,7 +1,8 @@
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Alert } from "react-native";
 import { Button, SegmentedButtons, TextInput } from "react-native-paper";
 import React, { useState } from "react";
 import { useAuth } from "@/src/contexts/AuthContext";
+import catchError from "@/src/utils/catchError";
 
 export default function SignInScreen() {
   const { signIn, signUp } = useAuth();
@@ -10,6 +11,22 @@ export default function SignInScreen() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
+
+  const handleSignIn = async () => {
+    const [error] = await catchError(signIn(email, password));
+
+    if (error) {
+      Alert.alert("", error.message);
+    }
+  };
+
+  const handleSignUp = async () => {
+    const [error] = await catchError(signUp(email, password, name));
+
+    if (error) {
+      Alert.alert("", error.message);
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -32,7 +49,7 @@ export default function SignInScreen() {
           <TextInput
             label="Email"
             value={email}
-            onChangeText={(text) => setEmail(text)}
+            onChangeText={setEmail}
             mode="outlined"
             keyboardType="email-address"
             autoCapitalize="none"
@@ -40,11 +57,11 @@ export default function SignInScreen() {
           <TextInput
             label="Password"
             value={password}
-            onChangeText={(text) => setPassword(text)}
+            onChangeText={setPassword}
             mode="outlined"
             secureTextEntry
           />
-          <Button onPress={() => signIn(email, password)}>Sign In</Button>
+          <Button onPress={handleSignIn}>Sign In</Button>
           {/* <Button onPress={signInWithGoogle}>Sign In with Google</Button> */}
         </>
       ) : (
@@ -52,7 +69,7 @@ export default function SignInScreen() {
           <TextInput
             label="Email"
             value={email}
-            onChangeText={(text) => setEmail(text)}
+            onChangeText={setEmail}
             mode="outlined"
             keyboardType="email-address"
             autoCapitalize="none"
@@ -60,19 +77,19 @@ export default function SignInScreen() {
           <TextInput
             label="Password"
             value={password}
-            onChangeText={(text) => setPassword(text)}
+            onChangeText={setPassword}
             mode="outlined"
             secureTextEntry
           />
           <TextInput
             label="Name"
             value={name}
-            onChangeText={(text) => setName(text)}
+            onChangeText={setName}
             mode="outlined"
             keyboardType="default"
             autoCapitalize="words"
           />
-          <Button onPress={() => signUp(email, password, name)}>Sign Up</Button>
+          <Button onPress={handleSignUp}>Sign Up</Button>
         </>
       )}
     </View>
