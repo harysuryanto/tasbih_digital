@@ -1,21 +1,21 @@
 import { StyleSheet, View } from "react-native";
 import React, { useCallback, useEffect, useState } from "react";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import useTasbeehsStore from "../../src/stores/useTasbeehsStore";
-import ScreenWrapper from "../../src/components/ScreenWrapper";
+import useTasbeehsStore from "@/src/stores/useTasbeehsStore";
+import ScreenWrapper from "@/src/components/ScreenWrapper";
 import { Appbar, IconButton, Snackbar } from "react-native-paper";
 import { Text } from "react-native-paper";
-import { vibrate } from "../../src/utils/vibrate";
-import useSettingsStore from "../../src/stores/useSettingsStore";
-import MyBannerAd from "../../src/components/MyBannerAd";
+import { vibrate } from "@/src/utils/vibrate";
+import useSettingsStore from "@/src/stores/useSettingsStore";
+import MyBannerAd from "@/src/components/MyBannerAd";
 
 export default function CounterScreen() {
   const router = useRouter();
 
-  const { tasbeehId } = useLocalSearchParams();
+  const { tasbeehId } = useLocalSearchParams<{ tasbeehId: string }>();
   const { tasbeehs, setCount, increment, decrement, reset } =
     useTasbeehsStore();
-  const tasbeeh = tasbeehs.find((value) => value.id === tasbeehId)!;
+  const tasbeeh = tasbeehs.find((value) => value.$id === tasbeehId)!;
   const { vibrationEvery33, vibrationEvery100 } = useSettingsStore();
   const [countBeforeResetted, setCountBeforeResetted] = useState<
     number | undefined
@@ -24,7 +24,7 @@ export default function CounterScreen() {
   const [snackbarVisible, setSnackbarVisible] = useState(false);
 
   const handleReset = () => {
-    reset(tasbeeh.id);
+    reset(tasbeeh.$id);
     setSnackbarVisible(true);
   };
 
@@ -38,12 +38,12 @@ export default function CounterScreen() {
       vibrate("light");
     }
 
-    increment(tasbeeh.id);
+    increment(tasbeeh.$id);
   }, [tasbeeh.count]);
 
   const handleDecrement = () => {
     vibrate("light");
-    decrement(tasbeeh.id);
+    decrement(tasbeeh.$id);
   };
 
   useEffect(() => {
@@ -89,7 +89,7 @@ export default function CounterScreen() {
         onDismiss={() => setSnackbarVisible(false)}
         action={{
           label: "Urungkan",
-          onPress: () => setCount(tasbeeh.id, countBeforeResetted!),
+          onPress: () => setCount(tasbeeh.$id, countBeforeResetted!),
         }}
       >
         Penghitung dikembalikan ke 0

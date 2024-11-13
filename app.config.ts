@@ -2,9 +2,8 @@ import { ConfigContext, ExpoConfig } from "expo/config";
 
 const packageJson = require("./package.json");
 const VERSION: string = packageJson.version;
-const APP_VARIANT = process.env.APP_VARIANT;
-const IS_DEV = APP_VARIANT === "development";
-const NAME: string = `Tasbih Digital${IS_DEV ? " Dev" : ""}`;
+const NAME: string = `Tasbih Digital`;
+const withAppwriteAuth = require("./withAppwriteAuth");
 
 module.exports = (_: ConfigContext): Partial<ExpoConfig> => {
   return {
@@ -18,19 +17,24 @@ module.exports = (_: ConfigContext): Partial<ExpoConfig> => {
     backgroundColor: "#000000",
     ios: {
       supportsTablet: true,
-      bundleIdentifier: IS_DEV
-        ? "com.harysuryanto.tasbihdigital.dev"
-        : "com.harysuryanto.tasbihdigital",
+      bundleIdentifier: "com.harysuryanto.tasbihdigital",
+      infoPlist: {
+        CFBundleURLTypes: [
+          {
+            CFBundleTypeRole: "Editor",
+            CFBundleURLName: "io.appwrite",
+            CFBundleURLSchemes: ["appwrite-callback-6710b5a600394e11084c"],
+          },
+        ],
+      },
     },
     android: {
       adaptiveIcon: {
         foregroundImage: "./assets/images/adaptive-icon.png",
         backgroundColor: "#ffffff",
       },
-      package: IS_DEV
-        ? "com.harysuryanto.tasbihdigital.dev"
-        : "com.harysuryanto.tasbihdigital",
-      versionCode: 6,
+      package: "com.harysuryanto.tasbihdigital",
+      versionCode: 7,
       permissions: ["com.google.android.gms.permission.AD_ID"],
     },
     web: {
@@ -44,8 +48,6 @@ module.exports = (_: ConfigContext): Partial<ExpoConfig> => {
         "expo-build-properties",
         {
           android: {
-            // TODO: Try to remove these sdk versions and publish again and see if there are changes in Play Console,
-            // because they are already set to 34 by default when I see the code in build.gradle.
             compileSdkVersion: 34,
             minSdkVersion: 34,
             targetSdkVersion: 34,
@@ -53,6 +55,7 @@ module.exports = (_: ConfigContext): Partial<ExpoConfig> => {
           ios: { useFrameworks: "static" },
         },
       ],
+      [withAppwriteAuth], // Ensure it's wrapped as a tuple
     ],
     experiments: {
       typedRoutes: true,

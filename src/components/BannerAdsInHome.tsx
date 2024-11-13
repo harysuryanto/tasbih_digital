@@ -1,5 +1,5 @@
 import React from "react";
-import MyBannerAd from "./MyBannerAd";
+import MyBannerAd from "@/src/components/MyBannerAd";
 import { StyleProp, View, ViewStyle } from "react-native";
 
 type Props = {

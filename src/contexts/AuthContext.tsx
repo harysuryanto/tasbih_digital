@@ -5,8 +5,26 @@ import {
   useEffect,
   useState,
 } from "react";
-import { Models } from "react-native-appwrite";
-import { account } from "../constants/Appwrite";
+import { ID, Models, OAuthProvider } from "react-native-appwrite";
+import { account } from "@/src/services/appwriteService";
+import catchError from "@/src/utils/catchError";
+import * as WebBrowser from "expo-web-browser";
+import * as Linking from "expo-linking";
+
+// Experimental
+WebBrowser.maybeCompleteAuthSession();
+
+// Handle OAuth Callback
+Linking.addEventListener("url", async ({ url }) => {
+  const { queryParams } = Linking.parse(url);
+
+  if (queryParams && queryParams.code) {
+    alert("OAuth successful:" + queryParams);
+    // Handle the code received from Google to create a session in Appwrite
+  } else {
+    console.error("OAuth failed or canceled");
+  }
+});
 
 export type AuthState = Models.User<Models.Preferences>;
 
@@ -15,6 +33,7 @@ export interface AuthValue {
   isLoading: boolean;
   signUp: (email: string, password: string, name: string) => Promise<void>;
   signIn: (email: string, password: string) => Promise<AuthState>;
+  signInWithGoogle: () => Promise<void>;
   signOut: () => Promise<void>;
 }
 
@@ -34,16 +53,31 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
 
   useEffect(() => {
     const loadAuthState = async () => {
-      if (value) {
-        setAuthState(await account.get());
-      }
+      const [, user] = await catchError(account.get());
+      setAuthState(user);
       setIsLoading(false);
     };
     loadAuthState();
   }, []);
 
-  // TODO: Add signUp function
-  const signUp = async (email: string, password: string, name: string) => {};
+  // For iOS only because (ChatGPT says) currently, Expo doesn’t support direct modification of SceneDelegate.swift
+  // since Expo projects avoid touching native code. However, there’s a workaround by creating
+  // a custom native module if absolutely needed, or handling deep links in JavaScript.
+  // You can listen for deep links using Expo’s built-in API.
+  useEffect(() => {
+    const subscription = Linking.addEventListener("url", async ({ url }) => {
+      if (url.includes("appwrite-callback")) {
+        alert(`Appwrite Callback URL: ${url}`);
+        // Handle the callback logic here, similar to WebAuthComponent.handleIncomingCookie
+      }
+    });
+    return () => subscription.remove();
+  }, []);
+
+  const signUp = async (email: string, password: string, name: string) => {
+    await account.create(ID.unique(), email, password, name);
+    await signIn(email, password);
+  };
 
   const signIn = async (email: string, password: string) => {
     await account.createEmailPasswordSession(email, password);
@@ -52,6 +86,29 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
     setAuthState(authState);
 
     return authState;
+  };
+
+  const signInWithGoogle = async () => {
+    const result = account.createOAuth2Session(
+      OAuthProvider.Google
+      // "com.harysuryanto.tasbihdigital://home",
+      // "com.harysuryanto.tasbihdigital://sign-in",
+      // ["email", "profile", "openid"] // Experimental
+    );
+
+    if (!(result instanceof URL)) {
+      console.log("it is not a URL");
+      return;
+    }
+
+    console.log("OAuth2 URL", result);
+    await WebBrowser.openBrowserAsync(result.toString());
+
+    // const authState = await account.get();
+
+    // console.log("authState:", authState);
+    console.log("session", await account.getSession("current"));
+    setAuthState(authState);
   };
 
   const signOut = async () => {
@@ -66,6 +123,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
     isLoading,
     signUp,
     signIn,
+    signInWithGoogle,
     signOut,
   };
 

@@ -1,107 +1,108 @@
-import {
-  View,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-} from "react-native";
+import { View, StyleSheet, Alert } from "react-native";
+import { Button, SegmentedButtons, TextInput } from "react-native-paper";
 import React, { useState } from "react";
-import { ID } from "react-native-appwrite";
-import { account } from "../../../src/constants/Appwrite";
-import { useAuth } from "../../../src/contexts/AuthContext";
+import { useAuth } from "@/src/contexts/AuthContext";
+import catchError from "@/src/utils/catchError";
 
 export default function SignInScreen() {
-  const { authState, signIn, signOut } = useAuth();
+  const { signIn, signUp } = useAuth();
 
-  // const [loggedInUser, setLoggedInUser] =
-  //   useState<Models.User<Models.Preferences> | null>(null);
+  const [activeTab, setActiveTab] = useState("signin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
 
-  async function login(email: string, password: string) {
-    await signIn(email, password);
-    // await account.createEmailPasswordSession(email, password);
-    // setLoggedInUser(await account.get());
-  }
+  const handleSignIn = async () => {
+    const [error] = await catchError(signIn(email, password));
 
-  async function register(email: string, password: string, name: string) {
-    await account.create(ID.unique(), email, password, name);
-    await signIn(email, password);
-    // await login(email, password);
-    // setLoggedInUser(await account.get());
-  }
+    if (error) {
+      Alert.alert("", error.message);
+    }
+  };
+
+  const handleSignUp = async () => {
+    const [error] = await catchError(signUp(email, password, name));
+
+    if (error) {
+      Alert.alert("", error.message);
+    }
+  };
 
   return (
-    <View style={styles.root}>
-      <Text>
-        {authState ? `Logged in as ${authState.name}` : "Not logged in"}
-      </Text>
-      <View>
-        <TextInput
-          style={styles.input}
-          placeholder="Email"
-          value={email}
-          onChangeText={(text) => setEmail(text)}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Password"
-          value={password}
-          onChangeText={(text) => setPassword(text)}
-          secureTextEntry
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Name"
-          value={name}
-          onChangeText={(text) => setName(text)}
-        />
-
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => login(email, password)}
-        >
-          <Text>Login</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => register(email, password, name)}
-        >
-          <Text>Register</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={styles.button}
-          onPress={async () => {
-            signOut();
-            // await account.deleteSession("current");
-          }}
-        >
-          <Text>Logout</Text>
-        </TouchableOpacity>
-      </View>
+    <View style={styles.container}>
+      <SegmentedButtons
+        value={activeTab}
+        onValueChange={setActiveTab}
+        buttons={[
+          {
+            value: "signin",
+            label: "Sign In",
+          },
+          {
+            value: "signup",
+            label: "Sign Up",
+          },
+        ]}
+      />
+      {activeTab === "signin" ? (
+        <>
+          <TextInput
+            label="Email"
+            value={email}
+            onChangeText={setEmail}
+            mode="outlined"
+            keyboardType="email-address"
+            autoCapitalize="none"
+          />
+          <TextInput
+            label="Password"
+            value={password}
+            onChangeText={setPassword}
+            mode="outlined"
+            secureTextEntry
+          />
+          <Button onPress={handleSignIn}>Sign In</Button>
+          {/* <Button onPress={signInWithGoogle}>Sign In with Google</Button> */}
+        </>
+      ) : (
+        <>
+          <TextInput
+            label="Email"
+            value={email}
+            onChangeText={setEmail}
+            mode="outlined"
+            keyboardType="email-address"
+            autoCapitalize="none"
+          />
+          <TextInput
+            label="Password"
+            value={password}
+            onChangeText={setPassword}
+            mode="outlined"
+            secureTextEntry
+          />
+          <TextInput
+            label="Name"
+            value={name}
+            onChangeText={setName}
+            mode="outlined"
+            keyboardType="default"
+            autoCapitalize="words"
+          />
+          <Button onPress={handleSignUp}>Sign Up</Button>
+        </>
+      )}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  root: {
-    marginTop: 40,
-    marginBottom: 40,
-  },
-  input: {
-    height: 40,
-    borderColor: "gray",
-    borderWidth: 1,
-    marginBottom: 10,
-    paddingHorizontal: 10,
-  },
-  button: {
-    backgroundColor: "gray",
-    padding: 10,
-    marginBottom: 10,
-    alignItems: "center",
+  container: {
+    alignItems: "stretch",
+    backgroundColor: "white",
+    flex: 1,
+    gap: 8,
+    justifyContent: "center",
+    padding: 20,
   },
 });

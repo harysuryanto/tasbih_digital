@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { ScrollView, StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
-import useTasbeehsStore from "../../../src/stores/useTasbeehsStore";
+import useTasbeehsStore from "@/src/stores/useTasbeehsStore";
 import moment from "moment";
 import {
   Appbar,
@@ -13,22 +13,30 @@ import {
   Text,
   TextInput,
 } from "react-native-paper";
-import ScreenWrapper from "../../../src/components/ScreenWrapper";
-import { vibrate } from "../../../src/utils/vibrate";
+import ScreenWrapper from "@/src/components/ScreenWrapper";
+import { vibrate } from "@/src/utils/vibrate";
 import Toast from "react-native-simple-toast";
-import BannerAdsInHome from "../../../src/components/BannerAdsInHome";
+import BannerAdsInHome from "@/src/components/BannerAdsInHome";
+import { TasbeehDoc } from "@/src/types/tasbeeh";
 
 export default function HomeScreen() {
   const router = useRouter();
 
-  const { tasbeehs, add, edit, remove } = useTasbeehsStore();
+  const tasbeehs = useTasbeehsStore(({ tasbeehs }) => tasbeehs);
+  const { load, add, update, remove } = useTasbeehsStore();
 
   const [modalVisible, setModalVisible] = useState(false);
-  const [selectedTasbeeh, setSelectedTasbeeh] = useState<Tasbeeh | undefined>();
+  const [selectedTasbeeh, setSelectedTasbeeh] = useState<
+    TasbeehDoc | undefined
+  >();
   const [removedTasbeeh, setRemovedTasbeeh] = useState<
-    { tasbeeh: Tasbeeh; atIndex: number } | undefined
+    TasbeehDoc | undefined
   >();
   const [tasbeehName, setTasbeehName] = useState("");
+
+  useEffect(() => {
+    load();
+  }, []);
 
   useEffect(() => {
     if (!modalVisible) {
@@ -36,13 +44,16 @@ export default function HomeScreen() {
     }
   }, [modalVisible]);
 
-  const tasbeehExists = (name: string) => {
-    return (
-      tasbeehs.find(
-        (tasbeeh) => tasbeeh.name.toLowerCase() === name.toLowerCase()
-      ) !== undefined
-    );
-  };
+  const tasbeehExists = useCallback(
+    (name: string) => {
+      return (
+        tasbeehs.find(
+          (tasbeeh) => tasbeeh.name.toLowerCase() === name.toLowerCase()
+        ) !== undefined
+      );
+    },
+    [tasbeehs]
+  );
 
   const handleSubmitForm = () => {
     if (tasbeehExists(tasbeehName)) {
@@ -56,9 +67,9 @@ export default function HomeScreen() {
     if (selectedTasbeeh === undefined) {
       add(tasbeehName.trim());
     } else {
-      edit({
-        ...selectedTasbeeh!,
+      update(selectedTasbeeh.$id, {
         name: tasbeehName.trim(),
+        count: selectedTasbeeh.count,
       });
     }
 
@@ -70,16 +81,16 @@ export default function HomeScreen() {
     setSelectedTasbeeh(undefined);
   };
 
-  const handleRemoveTasbeeh = () => {
+  const handleRemoveTasbeeh = async () => {
     vibrate("light");
-    setRemovedTasbeeh(remove(selectedTasbeeh!.id));
+    setRemovedTasbeeh(await remove(selectedTasbeeh!.$id));
     setModalVisible(false);
   };
 
-  const handleUndoRemoveTasbeeh = () => {
-    vibrate("light");
-    add(removedTasbeeh!.tasbeeh, removedTasbeeh?.atIndex);
-  };
+  // const handleUndoRemoveTasbeeh = () => {
+  //   vibrate("light");
+  //   add(removedTasbeeh!.tasbeeh, removedTasbeeh?.atIndex);
+  // };
 
   return (
     <ScreenWrapper withScrollView={false}>
@@ -96,7 +107,7 @@ export default function HomeScreen() {
           <>
             {tasbeehs.map((tasbeeh) => (
               <List.Item
-                key={tasbeeh.id}
+                key={tasbeeh.$id}
                 title={tasbeeh.name}
                 description={
                   tasbeeh.usedAt
@@ -107,7 +118,7 @@ export default function HomeScreen() {
                 right={({ color, style }) => (
                   <Text style={{ ...style, color }}>{tasbeeh.count}</Text>
                 )}
-                onPress={() => router.push(`/counter/${tasbeeh.id}`)}
+                onPress={() => router.push(`/(private)/counter/${tasbeeh.$id}`)}
                 onLongPress={() => {
                   setModalVisible(true);
                   setSelectedTasbeeh(tasbeeh);
@@ -146,9 +157,9 @@ export default function HomeScreen() {
       <Snackbar
         visible={removedTasbeeh !== undefined}
         onDismiss={() => setRemovedTasbeeh(undefined)}
-        action={{ label: "Urungkan", onPress: handleUndoRemoveTasbeeh }}
+        // action={{ label: "Urungkan", onPress: handleUndoRemoveTasbeeh }}
       >
-        {`${removedTasbeeh?.tasbeeh.name} dihapus`}
+        {`${removedTasbeeh?.name} dihapus`}
       </Snackbar>
     </ScreenWrapper>
   );

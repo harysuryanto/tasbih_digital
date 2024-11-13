@@ -3,9 +3,9 @@ import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { useFonts } from "expo-font";
 import { SplashScreen, Stack } from "expo-router";
 import { useEffect } from "react";
-import { checkOtaUpdate } from "../src/utils/ota-update";
-import Providers from "../src/components/Providers";
-import useAuthRedirection from "../src/hooks/useAuthRedirection";
+import { checkOtaUpdate } from "@/src/utils/ota-update";
+import Providers from "@/src/components/Providers";
+import useAuthRedirection from "@/src/hooks/useAuthRedirection";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -27,8 +27,7 @@ function Layout() {
     <Stack screenOptions={{ headerShown: false, animation: "ios" }}>
       <Stack.Screen name="splash-screen" />
       <Stack.Screen name="(public)" />
-      <Stack.Screen name="(tabs)" />
-      <Stack.Screen name="counter/[tasbeehId]" options={{ title: "Tasbih" }} />
+      <Stack.Screen name="(private)" />
     </Stack>
   );
 }
