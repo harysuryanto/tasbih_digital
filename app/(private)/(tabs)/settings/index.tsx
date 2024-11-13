@@ -14,7 +14,8 @@ export default function SettingsScreen() {
     setVibrationEvery33,
     setVibrationEvery100,
   } = useSettingsStore();
-  const { signOut } = useAuth();
+  const { authState, signOut } = useAuth();
+  const email = authState?.email ?? "";
 
   return (
     <ScreenWrapper withScrollView={false}>
@@ -44,7 +45,7 @@ export default function SettingsScreen() {
           />
         </List.Section>
         <List.Section>
-          <List.Subheader>Akun</List.Subheader>
+          <List.Subheader>Akun ({email})</List.Subheader>
           <List.Item title="Keluar" onPress={signOut} />
         </List.Section>
       </View>
