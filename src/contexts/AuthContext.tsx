@@ -30,7 +30,7 @@ export type AuthState = Models.User<Models.Preferences>;
 
 export interface AuthValue {
   authState?: AuthState | null;
-  isLoading: boolean;
+  isLoadingAuth: boolean;
   signUp: (email: string, password: string, name: string) => Promise<void>;
   signIn: (email: string, password: string) => Promise<AuthState>;
   signInWithGoogle: () => Promise<void>;
@@ -48,14 +48,13 @@ export const useAuth = () => {
 };
 
 export const AuthProvider = ({ children }: PropsWithChildren) => {
-  const [authState, setAuthState] = useState<AuthState | undefined>();
-  const [isLoading, setIsLoading] = useState(true);
+  const [authState, setAuthState] = useState<AuthState | undefined>(undefined);
+  const isLoadingAuth = authState === undefined;
 
   useEffect(() => {
     const loadAuthState = async () => {
       const [, user] = await catchError(account.get());
       setAuthState(user);
-      setIsLoading(false);
     };
     loadAuthState();
   }, []);
@@ -120,7 +119,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
 
   const value = {
     authState,
-    isLoading,
+    isLoadingAuth,
     signUp,
     signIn,
     signInWithGoogle,

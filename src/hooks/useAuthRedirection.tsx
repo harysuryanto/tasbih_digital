@@ -6,7 +6,7 @@ export default function useAuthRedirection() {
   const router = useRouter();
   const segments = useSegments();
 
-  const { isLoading: isLoadingAuth, authState } = useAuth();
+  const { isLoadingAuth, authState } = useAuth();
 
   useEffect(() => {
     const isInSplashScreen = segments[0] === "splash-screen";
