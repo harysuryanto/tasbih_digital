@@ -4,12 +4,22 @@ import React, { useState } from "react";
 import { useAuth } from "@/src/contexts/AuthContext";
 import catchError from "@/src/utils/catchError";
 
+const getInitEmailValue = () => {
+  return process.env.NODE_ENV === "development"
+    ? "hary.suryanto01@gmail.com"
+    : "";
+};
+
+const getInitPasswordValue = () => {
+  return process.env.NODE_ENV === "development" ? "12345678" : "";
+};
+
 export default function SignInScreen() {
   const { signIn, signUp } = useAuth();
 
   const [activeTab, setActiveTab] = useState("signin");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState(getInitEmailValue);
+  const [password, setPassword] = useState(getInitPasswordValue);
   const [name, setName] = useState("");
 
   const handleSignIn = async () => {
