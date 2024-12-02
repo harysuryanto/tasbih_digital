@@ -56,8 +56,8 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
       const [error, user] = await catchError(account.get());
       if (error) {
         console.log("Error in loadAuthState:", error);
-        console.log("Setting authState to null (not signed in).");
-        setAuthState(null);
+        console.log("Signing out...");
+        signOut();
       } else {
         setAuthState(user);
       }
@@ -117,8 +117,13 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
   };
 
   const signOut = async () => {
-    await account.deleteSession("current");
-    setAuthState(undefined);
+    try {
+      await account.deleteSession("current");
+    } catch (error) {
+      console.log("Error in signOut:", error);
+    }
+
+    setAuthState(null);
     // Reset all states
     // queryClient.resetQueries({ type: "all" });
   };
