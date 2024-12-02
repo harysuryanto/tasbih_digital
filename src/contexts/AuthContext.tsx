@@ -10,6 +10,7 @@ import { account } from "@/src/services/appwriteService";
 import catchError from "@/src/utils/catchError";
 import * as WebBrowser from "expo-web-browser";
 import * as Linking from "expo-linking";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // Experimental
 WebBrowser.maybeCompleteAuthSession();
@@ -123,9 +124,9 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
       console.log("Error in signOut:", error);
     }
 
-    setAuthState(null);
     // Reset all states
-    // queryClient.resetQueries({ type: "all" });
+    setAuthState(null);
+    await AsyncStorage.multiRemove(["tasbeehs-storage", "settings-storage"]);
   };
 
   const value = {
