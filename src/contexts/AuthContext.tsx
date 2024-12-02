@@ -48,13 +48,19 @@ export const useAuth = () => {
 };
 
 export const AuthProvider = ({ children }: PropsWithChildren) => {
-  const [authState, setAuthState] = useState<AuthState | undefined>(undefined);
+  const [authState, setAuthState] = useState<AuthValue["authState"]>(undefined);
   const isLoadingAuth = authState === undefined;
 
   useEffect(() => {
     const loadAuthState = async () => {
-      const [, user] = await catchError(account.get());
-      setAuthState(user);
+      const [error, user] = await catchError(account.get());
+      if (error) {
+        console.log("Error in loadAuthState:", error);
+        console.log("Setting authState to null (not signed in).");
+        setAuthState(null);
+      } else {
+        setAuthState(user);
+      }
     };
     loadAuthState();
   }, []);
