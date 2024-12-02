@@ -1,6 +1,4 @@
 import "expo-dev-client";
-import FontAwesome from "@expo/vector-icons/FontAwesome";
-import { useFonts } from "expo-font";
 import { SplashScreen, Stack } from "expo-router";
 import { useEffect } from "react";
 import { checkOtaUpdate } from "@/src/utils/ota-update";
@@ -32,24 +30,7 @@ function Layout() {
   );
 }
 
-export default function RootLayout() {
-  // Load fonts at root before navigation.
-  const [loaded, error] = useFonts({
-    SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
-    ...FontAwesome.font,
-  });
-
-  // Expo Router uses Error Boundaries to catch errors in the navigation tree.
-  useEffect(() => {
-    if (error) throw error;
-  }, [error]);
-
-  useEffect(() => {
-    if (loaded) SplashScreen.hideAsync();
-  }, [loaded]);
-
-  if (!loaded) return null;
-
+export default function Root() {
   return (
     <Providers>
       <Layout />
